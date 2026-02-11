@@ -33,10 +33,12 @@ public class BasicGameApp implements Runnable, KeyListener{
     public JFrame frame;
     public Canvas canvas;
     public JPanel panel;
-
     public BufferStrategy bufferStrategy;
 
-    Bull bull;
+    public int score = 0;
+
+
+    Bull bull1;
     Bull bull2;
     Bull bull3;
     Bull bull4;
@@ -47,6 +49,9 @@ public class BasicGameApp implements Runnable, KeyListener{
 
     BlueCowboy blueCowboy;
     Image bluecowboyImage;
+
+    Sheep sheep;
+    Image sheepImage;
 
     Image rodeo = Toolkit.getDefaultToolkit().getImage("RodeoArena.png");
 
@@ -61,86 +66,78 @@ public class BasicGameApp implements Runnable, KeyListener{
         new Thread(ex).start();                 //creates a threads & starts up the code in the run( ) method
     }
 
-
     // This section is the setup portion of the program
     // Initialize your variables and construct your program objects here.
+
     public BasicGameApp() { // BasicGameApp constructor
 
         setUpGraphics();
-//        firstCrashRed = true;
-//        firstCrashBlue = true;
-//        firstCrashCowboys = true;
 
-        bull = new Bull("bull", 10, 10);
+        bull1 = new Bull("bull", 10, 10);
         bullImage = Toolkit.getDefaultToolkit().getImage("Bull.png");
 
         bull2 = new Bull("bull", 100, 10);
-
         bull3 = new Bull("bull", 200, 200);
         bull4 = new Bull("bull", 250, 250);
-
-
 
         redCowboy = new RedCowboy("RedCowboy", 263, 561);
         redcowboyImage = Toolkit.getDefaultToolkit().getImage("CowboyImage1.png");
 
         blueCowboy = new BlueCowboy("BlueCowboy", 132, 236);
         bluecowboyImage = Toolkit.getDefaultToolkit().getImage("CowboyImage2.png");
-        run();
 
-    } // end BasicGameApp constructor
+        sheep = new Sheep("SheepItem",40,40);
+        sheepImage = Toolkit.getDefaultToolkit().getImage("Sheep.png");
 
+    }
 
-//*******************************************************************************
-//User Method Section
-// put your code to do things here.
-
-    // main thread
-    // this is the code that plays the game after you set things up
     public void run() {
         //for the moment we will loop things forever.
         while (true) {
-            moveThings();//move all the game objects
+            moveThings();//move all the game objects\
+            collectSheep();
             render();  // paint the graphics
-            pause(20); // sleep for 10 ms
+            pause(20);// sleep for 10 ms
+
         }
     }
 
     public void moveThings() {
-        bull.chase(redCowboy.xpos, redCowboy.ypos,4);
+        bull1.chase(redCowboy.xpos, redCowboy.ypos,3);
         bull2.chase(blueCowboy.xpos, blueCowboy.ypos, 3);
-        bull3.chase(blueCowboy.xpos, blueCowboy.ypos, 5);
-        bull.move();
+        bull3.chase(blueCowboy.xpos, blueCowboy.ypos, 0);
+
+        bull1.move();
         bull2.move();
         bull3.move();
         bull4.move();
+
         blueCowboy.move();
         redCowboy.move();
+
         checkCrashAndToss();
     }
 
     public void checkCrashAndToss() {
-        if (bull.rect.intersects(redCowboy.rect)) {
+        if (bull1.rect.intersects(redCowboy.rect)) {
 
-            if (bull.xpos < redCowboy.xpos) {
+            if (bull1.xpos < redCowboy.xpos) {
                 redCowboy.xpos += 50;
             } else {
                 redCowboy.xpos -= 50;
             }
 
-            if (bull.ypos < redCowboy.ypos) {
+            if (bull1.ypos < redCowboy.ypos) {
                 redCowboy.ypos += 50;
             } else {
                 redCowboy.ypos -= 50;
             }
-
 
             if (redCowboy.xpos < 0) redCowboy.xpos = 0;
             if (redCowboy.xpos + redCowboy.width > WIDTH) redCowboy.xpos = WIDTH - redCowboy.width;
             if (redCowboy.ypos < 0) redCowboy.ypos = 0;
             if (redCowboy.ypos + redCowboy.height > HEIGHT) redCowboy.ypos = HEIGHT - redCowboy.height;
         }
-
 
         if (bull2.rect.intersects(blueCowboy.rect)) {
             if (bull2.xpos < blueCowboy.xpos) {
@@ -221,18 +218,40 @@ public class BasicGameApp implements Runnable, KeyListener{
         }
     }
 
+    public void collectSheep() {
+        if (sheep.isAlive) {
+            if (redCowboy.rect.intersects(sheep.rect) || blueCowboy.rect.intersects(sheep.rect)) {
+                sheep.isAlive = false;
+                score++;
+                sheep.xpos = (int)(Math.random() * (WIDTH - sheep.width));
+                sheep.ypos = (int)(Math.random() * (HEIGHT - sheep.height));
+                sheep.isAlive = true;
+                sheep.rect = new Rectangle(sheep.xpos, sheep.ypos, sheep.width, sheep.height);
+            }
+        }
+    }
 
     //Paints things on the screen using bufferStrategy
     private void render() {
         Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
         g.clearRect(0, 0, WIDTH, HEIGHT);
+
         g.drawImage(rodeo, 0, 0, WIDTH, HEIGHT, null);
-        g.drawImage(bullImage, bull.xpos, bull.ypos, bull.width, bull.height, null);
+        g.drawImage(bullImage, bull1.xpos, bull1.ypos, bull1.width, bull1.height, null);
         g.drawImage(bullImage, bull2.xpos, bull2.ypos, bull2.width, bull2.height, null);
         g.drawImage(bullImage, bull3.xpos, bull3.ypos, bull3.width, bull3.height, null);
         g.drawImage(bullImage, bull4.xpos, bull4.ypos, bull4.width, bull4.height, null);
         g.drawImage(redcowboyImage, redCowboy.xpos, redCowboy.ypos, redCowboy.width, redCowboy.height, null);
         g.drawImage(bluecowboyImage, blueCowboy.xpos, blueCowboy.ypos, blueCowboy.width, blueCowboy.height, null);
+
+        if (sheep.isAlive) {
+            g.drawImage(sheepImage, sheep.xpos, sheep.ypos, sheep.width, sheep.height, null);
+        }
+
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Arial", Font.BOLD, 30));
+        g.drawString("Score: " + score, 20, 40);
+
         g.dispose();
         bufferStrategy.show();
     }
