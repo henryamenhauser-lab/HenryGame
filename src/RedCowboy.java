@@ -26,8 +26,8 @@ public class RedCowboy {
         ypos = pYpos;
         dx = 0;
         dy = 0;
-        width = 40;
-        height = 90;
+        width = 30;
+        height = 60;
         isAlive = true;
         rect = new Rectangle(xpos, ypos, width, height);
 

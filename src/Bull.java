@@ -24,10 +24,10 @@ public class Bull {
         name = pName;
         xpos = pXpos;
         ypos = pYpos;
-        dx = 4;
-        dy = 4;
-        width = 120;
-        height = 70;
+        dx = 3;
+        dy = 3;
+        width = 100;
+        height = 60;
         isAlive = true;
         rect = new Rectangle(xpos, ypos, width, height);
 

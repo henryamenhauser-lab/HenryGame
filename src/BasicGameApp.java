@@ -36,6 +36,8 @@ public class BasicGameApp implements Runnable, KeyListener{
     public BufferStrategy bufferStrategy;
 
     public int score = 0;
+    public int healthBarRed = 5;
+    public int healthBarBlue = 5;
 
 
     Bull bull1;
@@ -77,7 +79,7 @@ public class BasicGameApp implements Runnable, KeyListener{
         bullImage = Toolkit.getDefaultToolkit().getImage("Bull.png");
 
         bull2 = new Bull("bull", 100, 10);
-        bull3 = new Bull("bull", 200, 200);
+        bull3 = new Bull("bull", 500, 100);
         bull4 = new Bull("bull", 250, 250);
 
         redCowboy = new RedCowboy("RedCowboy", 263, 561);
@@ -105,7 +107,6 @@ public class BasicGameApp implements Runnable, KeyListener{
     public void moveThings() {
         bull1.chase(redCowboy.xpos, redCowboy.ypos,3);
         bull2.chase(blueCowboy.xpos, blueCowboy.ypos, 3);
-        bull3.chase(blueCowboy.xpos, blueCowboy.ypos, 0);
 
         bull1.move();
         bull2.move();
@@ -137,6 +138,8 @@ public class BasicGameApp implements Runnable, KeyListener{
             if (redCowboy.xpos + redCowboy.width > WIDTH) redCowboy.xpos = WIDTH - redCowboy.width;
             if (redCowboy.ypos < 0) redCowboy.ypos = 0;
             if (redCowboy.ypos + redCowboy.height > HEIGHT) redCowboy.ypos = HEIGHT - redCowboy.height;
+
+            healthBarRed--;
         }
 
         if (bull2.rect.intersects(blueCowboy.rect)) {
@@ -176,6 +179,8 @@ public class BasicGameApp implements Runnable, KeyListener{
             if (blueCowboy.xpos + blueCowboy.width > WIDTH) blueCowboy.xpos = WIDTH - blueCowboy.width;
             if (blueCowboy.ypos < 0) blueCowboy.ypos = 0;
             if (blueCowboy.ypos + blueCowboy.height > HEIGHT) blueCowboy.ypos = HEIGHT - blueCowboy.height;
+
+            healthBarBlue--;
         }
         if (bull4.rect.intersects(blueCowboy.rect)) {
             if (bull4.xpos < blueCowboy.xpos) {
@@ -195,6 +200,8 @@ public class BasicGameApp implements Runnable, KeyListener{
             if (blueCowboy.xpos + blueCowboy.width > WIDTH) blueCowboy.xpos = WIDTH - blueCowboy.width;
             if (blueCowboy.ypos < 0) blueCowboy.ypos = 0;
             if (blueCowboy.ypos + blueCowboy.height > HEIGHT) blueCowboy.ypos = HEIGHT - blueCowboy.height;
+
+            healthBarBlue--;
         }
         if (bull4.rect.intersects(redCowboy.rect)) {
 
@@ -215,6 +222,8 @@ public class BasicGameApp implements Runnable, KeyListener{
             if (redCowboy.xpos + redCowboy.width > WIDTH) redCowboy.xpos = WIDTH - redCowboy.width;
             if (redCowboy.ypos < 0) redCowboy.ypos = 0;
             if (redCowboy.ypos + redCowboy.height > HEIGHT) redCowboy.ypos = HEIGHT - redCowboy.height;
+
+            healthBarRed--;
         }
     }
 
@@ -228,6 +237,17 @@ public class BasicGameApp implements Runnable, KeyListener{
                 sheep.isAlive = true;
                 sheep.rect = new Rectangle(sheep.xpos, sheep.ypos, sheep.width, sheep.height);
             }
+        }
+    }
+
+    public void endOfGame() {
+        if (healthBarRed<1) {
+            redCowboy.dx =0;
+            redCowboy.dy =0;
+        }
+        if (healthBarBlue<1) {
+            blueCowboy.dx = 0;
+            blueCowboy.dy = 0;
         }
     }
 
@@ -251,6 +271,14 @@ public class BasicGameApp implements Runnable, KeyListener{
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.BOLD, 30));
         g.drawString("Score: " + score, 20, 40);
+
+        g.setColor(Color.RED);
+        g.setFont(new Font("Arial", Font.BOLD, 30));
+        g.drawString("Health: " + healthBarRed, 220, 40);
+
+        g.setColor(Color.BLUE);
+        g.setFont(new Font("Arial", Font.BOLD, 30));
+        g.drawString("Health: " + healthBarBlue, 420, 40);
 
         g.dispose();
         bufferStrategy.show();
@@ -301,42 +329,43 @@ public class BasicGameApp implements Runnable, KeyListener{
     @Override
     public void keyPressed(KeyEvent e) {
         System.out.println(e.getKeyCode());
+            if (healthBarRed >0) {
+                if (e.getKeyCode() == 38) { //this is up
+                    redCowboy.dy = -10;
+                    redCowboy.dx = 0;
 
-            if (e.getKeyCode() == 38) { //this is up
-                redCowboy.dy = -10;
-                redCowboy.dx = 0;
+                }
+                if (e.getKeyCode() == 40) { //this is down
+                    redCowboy.dy = 10;
+                    redCowboy.dx = 0;
+                }
+                if (e.getKeyCode() == 37) { //this is left
+                    redCowboy.dy = 0;
+                    redCowboy.dx = -10;
+                }
+                if (e.getKeyCode() == 39) {//this is right
+                    redCowboy.dy = 0;
+                    redCowboy.dx = 10;
 
-            }
-            if (e.getKeyCode() == 40) { //this is down
-                redCowboy.dy = 10;
-                redCowboy.dx = 0;
-            }
-            if (e.getKeyCode() == 37) { //this is left
-                redCowboy.dy = 0;
-                redCowboy.dx = -10;
-            }
-            if (e.getKeyCode() == 39) {//this is right
-                redCowboy.dy = 0;
-                redCowboy.dx = 10;
-
-            }
+                }
 
 
-            if (e.getKeyCode() == 87) { //this is up
-            blueCowboy.dy = -10;
-            blueCowboy.dx = 0;
-            }
-            if (e.getKeyCode() == 83) { //this is down
-            blueCowboy.dy = 10;
-            blueCowboy.dx = 0;
-            }
-            if (e.getKeyCode() == 65) { //this is left
-            blueCowboy.dy = 0;
-            blueCowboy.dx = -10;
-            }
-            if (e.getKeyCode() == 68) {//this is right
-            blueCowboy.dy = 0;
-            blueCowboy.dx = 10;
+                if (e.getKeyCode() == 87) { //this is up
+                    blueCowboy.dy = -10;
+                    blueCowboy.dx = 0;
+                }
+                if (e.getKeyCode() == 83) { //this is down
+                    blueCowboy.dy = 10;
+                    blueCowboy.dx = 0;
+                }
+                if (e.getKeyCode() == 65) { //this is left
+                    blueCowboy.dy = 0;
+                    blueCowboy.dx = -10;
+                }
+                if (e.getKeyCode() == 68) {//this is right
+                    blueCowboy.dy = 0;
+                    blueCowboy.dx = 10;
+                }
             }
     }
     @Override
