@@ -97,7 +97,6 @@ public class BasicGameApp implements Runnable, KeyListener{
         //for the moment we will loop things forever.
         while (true) {
             moveThings();//move all the game objects\
-            collectSheep();
             render();  // paint the graphics
             pause(20);// sleep for 10 ms
 
@@ -117,6 +116,19 @@ public class BasicGameApp implements Runnable, KeyListener{
         redCowboy.move();
 
         checkCrashAndToss();
+        collectSheep();
+
+        if (score >1) {
+            sheep.move();
+        }
+        if (score >2) {
+            bull1.runAway(redCowboy.xpos, redCowboy.ypos,3);
+            bull2.runAway(blueCowboy.xpos, blueCowboy.ypos,3);
+            bull3.runAway(redCowboy.xpos, redCowboy.ypos,3);
+            bull4.runAway(blueCowboy.xpos, blueCowboy.ypos,3);
+        }
+
+        stopBull();
     }
 
     public void checkCrashAndToss() {
@@ -139,7 +151,10 @@ public class BasicGameApp implements Runnable, KeyListener{
             if (redCowboy.ypos < 0) redCowboy.ypos = 0;
             if (redCowboy.ypos + redCowboy.height > HEIGHT) redCowboy.ypos = HEIGHT - redCowboy.height;
 
-            healthBarRed--;
+            if (healthBarRed >0) {
+                healthBarRed--;
+            }
+
         }
 
         if (bull2.rect.intersects(blueCowboy.rect)) {
@@ -160,6 +175,11 @@ public class BasicGameApp implements Runnable, KeyListener{
             if (blueCowboy.xpos + blueCowboy.width > WIDTH) blueCowboy.xpos = WIDTH - blueCowboy.width;
             if (blueCowboy.ypos < 0) blueCowboy.ypos = 0;
             if (blueCowboy.ypos + blueCowboy.height > HEIGHT) blueCowboy.ypos = HEIGHT - blueCowboy.height;
+
+            if (healthBarBlue >0) {
+                healthBarBlue--;
+            }
+
         }
         if (bull3.rect.intersects(blueCowboy.rect)) {
             if (bull3.xpos < blueCowboy.xpos) {
@@ -180,8 +200,36 @@ public class BasicGameApp implements Runnable, KeyListener{
             if (blueCowboy.ypos < 0) blueCowboy.ypos = 0;
             if (blueCowboy.ypos + blueCowboy.height > HEIGHT) blueCowboy.ypos = HEIGHT - blueCowboy.height;
 
-            healthBarBlue--;
+            if (healthBarBlue >0) {
+                healthBarBlue--;
+            }
+
         }
+
+        if (bull3.rect.intersects(redCowboy.rect)) {
+            if (bull3.xpos < redCowboy.xpos) {
+                redCowboy.xpos += 50;
+
+            } else {
+                redCowboy.xpos -= 50;
+            }
+
+            if (bull3.ypos < redCowboy.ypos) {
+                redCowboy.ypos += 50;
+            } else {
+                redCowboy.ypos -= 50;
+            }
+
+            if (redCowboy.xpos < 0) redCowboy.xpos = 0;
+            if (redCowboy.xpos + redCowboy.width > WIDTH) redCowboy.xpos = WIDTH - redCowboy.width;
+            if (redCowboy.ypos < 0) redCowboy.ypos = 0;
+            if (redCowboy.ypos + redCowboy.height > HEIGHT) redCowboy.ypos = HEIGHT - redCowboy.height;
+
+            if (healthBarRed >0) {
+                healthBarRed--;
+            }
+        }
+
         if (bull4.rect.intersects(blueCowboy.rect)) {
             if (bull4.xpos < blueCowboy.xpos) {
                 blueCowboy.xpos += 50;
@@ -201,7 +249,10 @@ public class BasicGameApp implements Runnable, KeyListener{
             if (blueCowboy.ypos < 0) blueCowboy.ypos = 0;
             if (blueCowboy.ypos + blueCowboy.height > HEIGHT) blueCowboy.ypos = HEIGHT - blueCowboy.height;
 
-            healthBarBlue--;
+            if (healthBarBlue >0) {
+                healthBarBlue--;
+            }
+
         }
         if (bull4.rect.intersects(redCowboy.rect)) {
 
@@ -223,13 +274,16 @@ public class BasicGameApp implements Runnable, KeyListener{
             if (redCowboy.ypos < 0) redCowboy.ypos = 0;
             if (redCowboy.ypos + redCowboy.height > HEIGHT) redCowboy.ypos = HEIGHT - redCowboy.height;
 
-            healthBarRed--;
+            if (healthBarRed >0) {
+                healthBarRed--;
+            }
+
         }
     }
 
     public void collectSheep() {
         if (sheep.isAlive) {
-            if (redCowboy.rect.intersects(sheep.rect) || blueCowboy.rect.intersects(sheep.rect)) {
+            if (redCowboy.rect.intersects(sheep.rect) && healthBarRed >0 || blueCowboy.rect.intersects(sheep.rect) && healthBarBlue >0) {
                 sheep.isAlive = false;
                 score++;
                 sheep.xpos = (int)(Math.random() * (WIDTH - sheep.width));
@@ -240,16 +294,23 @@ public class BasicGameApp implements Runnable, KeyListener{
         }
     }
 
-    public void endOfGame() {
-        if (healthBarRed<1) {
-            redCowboy.dx =0;
-            redCowboy.dy =0;
+    public void stopBull() {
+        if (healthBarBlue <1) {
+            bull2.dx = 0;
+            bull2.dy = 0;
         }
-        if (healthBarBlue<1) {
-            blueCowboy.dx = 0;
-            blueCowboy.dy = 0;
+        if (healthBarRed <1) {
+            bull1.dx = 0;
+            bull1.dy = 0;
+        }
+        if (healthBarBlue <1 && healthBarRed <1) {
+            bull3.dx = 0;
+            bull3.dy = 0;
+            bull4.dx = 0;
+            bull4.dy = 0;
         }
     }
+
 
     //Paints things on the screen using bufferStrategy
     private void render() {
@@ -279,6 +340,15 @@ public class BasicGameApp implements Runnable, KeyListener{
         g.setColor(Color.BLUE);
         g.setFont(new Font("Arial", Font.BOLD, 30));
         g.drawString("Health: " + healthBarBlue, 420, 40);
+
+        if (healthBarRed<1 && healthBarBlue<1) {
+            g.setColor(Color.RED);
+            g.setFont(new Font("Arial", Font.BOLD, 150));
+            g.drawString("Game Over",80,350);
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Arial", Font.BOLD, 50));
+            g.drawString("Score:" + score,200,450);
+        }
 
         g.dispose();
         bufferStrategy.show();
@@ -348,8 +418,9 @@ public class BasicGameApp implements Runnable, KeyListener{
                     redCowboy.dx = 10;
 
                 }
+            }
 
-
+            if (healthBarBlue > 0) {
                 if (e.getKeyCode() == 87) { //this is up
                     blueCowboy.dy = -10;
                     blueCowboy.dx = 0;
@@ -368,6 +439,7 @@ public class BasicGameApp implements Runnable, KeyListener{
                 }
             }
     }
+
     @Override
     public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() == 38) { //this is up

@@ -85,6 +85,30 @@ public class Bull {
         }
     }
 
+    public void runAway(int targetX, int targetY, double speed) {
+        double dxSide = xpos - targetX;
+        double dySide = ypos - targetY;
+
+        double dist = Math.sqrt(dxSide * dxSide + dySide * dySide);
+
+        if (dist != 0) {
+            dx = (int)(speed * dxSide / dist);
+            dy = (int)(speed * dySide / dist);
+        }
+        if(xpos >= 1000 - width ){
+            dx = -dx;
+        }
+        if (ypos >= 700 - height){;
+            dy = -dy;
+        }
+        if(xpos <= 0 ){
+            dx = -dx;
+        }
+        if (ypos <= 0){
+            dy = -dy;
+        }
+
+    }
     
 }
 

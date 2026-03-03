@@ -33,17 +33,19 @@ public class Sheep {
         xpos = xpos + dx;
         ypos = ypos + dy;
         rect = new Rectangle(xpos, ypos, width, height);
-        if (xpos > 1000-width){
-            xpos = 1000-width;
+
+        if(xpos >= 1000 - width ){
+            dx = -dx;
         }
-        if (xpos <0){
-            xpos = 0;
+        if (ypos >= 700 - height){;
+            dy = -dy;
         }
-        if (ypos > 700-height){
-            ypos = 700-height;
+        if(xpos <= 0 ){
+            dx = -dx;
         }
-        if (ypos <0){
-            ypos = 0;
+        if (ypos <= 0){
+            dy = -dy;
         }
+
     }
 }
