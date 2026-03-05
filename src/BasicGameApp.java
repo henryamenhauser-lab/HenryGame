@@ -36,6 +36,7 @@ public class BasicGameApp implements Runnable, KeyListener{
     public BufferStrategy bufferStrategy;
 
     public int score = 0;
+    public int highScore = 0;
     public int healthBarRed = 5;
     public int healthBarBlue = 5;
 
@@ -44,6 +45,8 @@ public class BasicGameApp implements Runnable, KeyListener{
     Bull bull2;
     Bull bull3;
     Bull bull4;
+    Bull bull5;
+    Bull bull6;
     Image bullImage;
 
     RedCowboy redCowboy;
@@ -54,6 +57,9 @@ public class BasicGameApp implements Runnable, KeyListener{
 
     Sheep sheep;
     Image sheepImage;
+
+    Chicken chicken;
+    Image chickenImage;
 
     Image rodeo = Toolkit.getDefaultToolkit().getImage("RodeoArena.png");
 
@@ -81,6 +87,8 @@ public class BasicGameApp implements Runnable, KeyListener{
         bull2 = new Bull("bull", 100, 10);
         bull3 = new Bull("bull", 500, 100);
         bull4 = new Bull("bull", 250, 250);
+        bull5 = new Bull("bull",880,580);
+        bull6 = new Bull("bull",880,580);
 
         redCowboy = new RedCowboy("RedCowboy", 263, 561);
         redcowboyImage = Toolkit.getDefaultToolkit().getImage("CowboyImage1.png");
@@ -90,6 +98,9 @@ public class BasicGameApp implements Runnable, KeyListener{
 
         sheep = new Sheep("SheepItem",40,40);
         sheepImage = Toolkit.getDefaultToolkit().getImage("Sheep.png");
+
+        chicken = new Chicken("Chicken",900,650);
+        chickenImage = Toolkit.getDefaultToolkit().getImage("Chicken.png");
 
     }
 
@@ -106,28 +117,25 @@ public class BasicGameApp implements Runnable, KeyListener{
     public void moveThings() {
         bull1.chase(redCowboy.xpos, redCowboy.ypos,3);
         bull2.chase(blueCowboy.xpos, blueCowboy.ypos, 3);
+        bull6.chase(sheep.xpos, sheep.ypos,3);
 
         bull1.move();
         bull2.move();
         bull3.move();
         bull4.move();
+        bull5.move();
+        bull6.move();
 
         blueCowboy.move();
         redCowboy.move();
+        chicken.move();
 
         checkCrashAndToss();
-        collectSheep();
+        collectSheepAndChicken();
 
-        if (score >1) {
+        if (score >10) {
             sheep.move();
         }
-        if (score >2) {
-            bull1.runAway(redCowboy.xpos, redCowboy.ypos,3);
-            bull2.runAway(blueCowboy.xpos, blueCowboy.ypos,3);
-            bull3.runAway(redCowboy.xpos, redCowboy.ypos,3);
-            bull4.runAway(blueCowboy.xpos, blueCowboy.ypos,3);
-        }
-
         stopBull();
     }
 
@@ -279,9 +287,114 @@ public class BasicGameApp implements Runnable, KeyListener{
             }
 
         }
+
+        if (score >20d) {
+            if (bull5.rect.intersects(blueCowboy.rect)) {
+                if (bull5.xpos < blueCowboy.xpos) {
+                    blueCowboy.xpos += 50;
+
+                } else {
+                    blueCowboy.xpos -= 50;
+                }
+
+                if (bull5.ypos < blueCowboy.ypos) {
+                    blueCowboy.ypos += 50;
+                } else {
+                    blueCowboy.ypos -= 50;
+                }
+
+                if (blueCowboy.xpos < 0) blueCowboy.xpos = 0;
+                if (blueCowboy.xpos + blueCowboy.width > WIDTH) blueCowboy.xpos = WIDTH - blueCowboy.width;
+                if (blueCowboy.ypos < 0) blueCowboy.ypos = 0;
+                if (blueCowboy.ypos + blueCowboy.height > HEIGHT) blueCowboy.ypos = HEIGHT - blueCowboy.height;
+
+                if (healthBarBlue > 0) {
+                    healthBarBlue--;
+                }
+
+            }
+            if (bull5.rect.intersects(redCowboy.rect)) {
+
+                if (bull5.xpos < redCowboy.xpos) {
+                    redCowboy.xpos += 50;
+                } else {
+                    redCowboy.xpos -= 50;
+                }
+
+                if (bull5.ypos < redCowboy.ypos) {
+                    redCowboy.ypos += 50;
+                } else {
+                    redCowboy.ypos -= 50;
+                }
+
+
+                if (redCowboy.xpos < 0) redCowboy.xpos = 0;
+                if (redCowboy.xpos + redCowboy.width > WIDTH) redCowboy.xpos = WIDTH - redCowboy.width;
+                if (redCowboy.ypos < 0) redCowboy.ypos = 0;
+                if (redCowboy.ypos + redCowboy.height > HEIGHT) redCowboy.ypos = HEIGHT - redCowboy.height;
+
+                if (healthBarRed > 0) {
+                    healthBarRed--;
+                }
+
+            }
+        }
+
+        if (score >20) {
+            if (bull6.rect.intersects(blueCowboy.rect)) {
+                if (bull6.xpos < blueCowboy.xpos) {
+                    blueCowboy.xpos += 50;
+
+                } else {
+                    blueCowboy.xpos -= 50;
+                }
+
+                if (bull6.ypos < blueCowboy.ypos) {
+                    blueCowboy.ypos += 50;
+                } else {
+                    blueCowboy.ypos -= 50;
+                }
+
+                if (blueCowboy.xpos < 0) blueCowboy.xpos = 0;
+                if (blueCowboy.xpos + blueCowboy.width > WIDTH) blueCowboy.xpos = WIDTH - blueCowboy.width;
+                if (blueCowboy.ypos < 0) blueCowboy.ypos = 0;
+                if (blueCowboy.ypos + blueCowboy.height > HEIGHT) blueCowboy.ypos = HEIGHT - blueCowboy.height;
+
+                if (healthBarBlue > 0) {
+                    healthBarBlue--;
+                }
+
+            }
+            if (bull6.rect.intersects(redCowboy.rect)) {
+
+                if (bull6.xpos < redCowboy.xpos) {
+                    redCowboy.xpos += 50;
+                } else {
+                    redCowboy.xpos -= 50;
+                }
+
+                if (bull6.ypos < redCowboy.ypos) {
+                    redCowboy.ypos += 50;
+                } else {
+                    redCowboy.ypos -= 50;
+                }
+
+
+                if (redCowboy.xpos < 0) redCowboy.xpos = 0;
+                if (redCowboy.xpos + redCowboy.width > WIDTH) redCowboy.xpos = WIDTH - redCowboy.width;
+                if (redCowboy.ypos < 0) redCowboy.ypos = 0;
+                if (redCowboy.ypos + redCowboy.height > HEIGHT) redCowboy.ypos = HEIGHT - redCowboy.height;
+
+                if (healthBarRed > 0) {
+                    healthBarRed--;
+                }
+
+            }
+        }
+
     }
 
-    public void collectSheep() {
+    public void collectSheepAndChicken() {
         if (sheep.isAlive) {
             if (redCowboy.rect.intersects(sheep.rect) && healthBarRed >0 || blueCowboy.rect.intersects(sheep.rect) && healthBarBlue >0) {
                 sheep.isAlive = false;
@@ -290,6 +403,16 @@ public class BasicGameApp implements Runnable, KeyListener{
                 sheep.ypos = (int)(Math.random() * (HEIGHT - sheep.height));
                 sheep.isAlive = true;
                 sheep.rect = new Rectangle(sheep.xpos, sheep.ypos, sheep.width, sheep.height);
+            }
+        }
+        if (chicken.isAlive) {
+            if (redCowboy.rect.intersects(chicken.rect) && healthBarRed >0 || blueCowboy.rect.intersects(chicken.rect) && healthBarBlue >0) {
+                chicken.isAlive = false;
+                score+=2;
+                chicken.xpos = (int)(Math.random() * (WIDTH - sheep.width));
+                chicken.ypos = (int)(Math.random() * (HEIGHT - sheep.height));
+                chicken.isAlive = true;
+                chicken.rect = new Rectangle(chicken.xpos, chicken.ypos, chicken.width, chicken.height);
             }
         }
     }
@@ -312,6 +435,7 @@ public class BasicGameApp implements Runnable, KeyListener{
     }
 
 
+
     //Paints things on the screen using bufferStrategy
     private void render() {
         Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
@@ -322,11 +446,19 @@ public class BasicGameApp implements Runnable, KeyListener{
         g.drawImage(bullImage, bull2.xpos, bull2.ypos, bull2.width, bull2.height, null);
         g.drawImage(bullImage, bull3.xpos, bull3.ypos, bull3.width, bull3.height, null);
         g.drawImage(bullImage, bull4.xpos, bull4.ypos, bull4.width, bull4.height, null);
+        if (score > 20) {
+            g.drawImage(bullImage, bull5.xpos, bull5.ypos, bull5.width, bull5.height, null);
+            g.drawImage(bullImage, bull6.xpos, bull6.ypos, bull6.width, bull6.height, null);
+
+        }
         g.drawImage(redcowboyImage, redCowboy.xpos, redCowboy.ypos, redCowboy.width, redCowboy.height, null);
         g.drawImage(bluecowboyImage, blueCowboy.xpos, blueCowboy.ypos, blueCowboy.width, blueCowboy.height, null);
 
         if (sheep.isAlive) {
             g.drawImage(sheepImage, sheep.xpos, sheep.ypos, sheep.width, sheep.height, null);
+        }
+        if (chicken.isAlive) {
+            g.drawImage(chickenImage, chicken.xpos, chicken.ypos, chicken.width, chicken.height, null);
         }
 
         g.setColor(Color.WHITE);
@@ -348,6 +480,15 @@ public class BasicGameApp implements Runnable, KeyListener{
             g.setColor(Color.WHITE);
             g.setFont(new Font("Arial", Font.BOLD, 50));
             g.drawString("Score:" + score,200,450);
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Arial", Font.PLAIN, 30));
+            g.drawString("Press R to Restart",500,450);
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Arial", Font.PLAIN, 30));
+            g.drawString("Highscore:" + highScore,500,650);
+            if (score > highScore) {
+                highScore = score;
+            }
         }
 
         g.dispose();
@@ -402,42 +543,47 @@ public class BasicGameApp implements Runnable, KeyListener{
             if (healthBarRed >0) {
                 if (e.getKeyCode() == 38) { //this is up
                     redCowboy.dy = -10;
-                    redCowboy.dx = 0;
-
                 }
                 if (e.getKeyCode() == 40) { //this is down
                     redCowboy.dy = 10;
-                    redCowboy.dx = 0;
                 }
                 if (e.getKeyCode() == 37) { //this is left
-                    redCowboy.dy = 0;
                     redCowboy.dx = -10;
                 }
                 if (e.getKeyCode() == 39) {//this is right
-                    redCowboy.dy = 0;
                     redCowboy.dx = 10;
-
                 }
             }
 
             if (healthBarBlue > 0) {
                 if (e.getKeyCode() == 87) { //this is up
                     blueCowboy.dy = -10;
-                    blueCowboy.dx = 0;
                 }
                 if (e.getKeyCode() == 83) { //this is down
                     blueCowboy.dy = 10;
-                    blueCowboy.dx = 0;
                 }
                 if (e.getKeyCode() == 65) { //this is left
-                    blueCowboy.dy = 0;
                     blueCowboy.dx = -10;
                 }
                 if (e.getKeyCode() == 68) {//this is right
-                    blueCowboy.dy = 0;
                     blueCowboy.dx = 10;
                 }
             }
+            if (e.getKeyCode() == 82) { //this is (R)
+                bull1 = new Bull("bull", 10, 10);
+                bull2 = new Bull("bull", 100, 10);
+                bull3 = new Bull("bull", 500, 100);
+                bull4 = new Bull("bull", 250, 250);
+                redCowboy = new RedCowboy("RedCowboy", 263, 561);
+                blueCowboy = new BlueCowboy("BlueCowboy", 132, 236);
+                sheep = new Sheep("SheepItem",40,40);
+                healthBarBlue = 5;
+                healthBarRed = 5;
+                score = 0;
+            }
+
+
+
     }
 
     @Override
@@ -479,6 +625,10 @@ public class BasicGameApp implements Runnable, KeyListener{
 
 
     }
+
+    // List of stuff I want to add.
+    // Bandages to gain health back
+    // Add more bulls
 }
 
 
