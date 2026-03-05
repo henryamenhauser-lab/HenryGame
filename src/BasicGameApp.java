@@ -26,8 +26,11 @@ public class BasicGameApp implements Runnable, KeyListener{
     //You can set their initial values too
 
     //Sets the width and height of the program window
-    final int WIDTH = 1000;
-    final int HEIGHT = 700;
+    public final int WIDTH = 1000;
+    public final int HEIGHT = 700;
+
+    public static final int worldWidth = 3000;
+    public static final int worldHeight = 2000;
 
     //Declare the variables needed for the graphics
     public JFrame frame;
@@ -40,6 +43,8 @@ public class BasicGameApp implements Runnable, KeyListener{
     public int healthBarRed = 5;
     public int healthBarBlue = 5;
 
+    public double cameraX;
+    public double cameraY;
 
     Bull bull1;
     Bull bull2;
@@ -115,16 +120,22 @@ public class BasicGameApp implements Runnable, KeyListener{
     }
 
     public void moveThings() {
-        bull1.chase(redCowboy.xpos, redCowboy.ypos,3);
-        bull2.chase(blueCowboy.xpos, blueCowboy.ypos, 3);
-        bull6.chase(sheep.xpos, sheep.ypos,3);
 
-        bull1.move();
-        bull2.move();
-        bull3.move();
-        bull4.move();
-        bull5.move();
-        bull6.move();
+        double halfScreenW = WIDTH / 2.0;
+        double halfScreenH = HEIGHT / 2.0;
+
+        bull1.chase((int) redCowboy.xpos, (int) redCowboy.ypos,3);
+        bull2.chase(blueCowboy.xpos, blueCowboy.ypos, 3);
+        bull6.chase(sheep.xpos, sheep.ypos,2.5);
+        chicken.runAway((int) redCowboy.xpos, (int) redCowboy.ypos,5);
+        chicken.runAway(blueCowboy.xpos,blueCowboy.ypos,5);
+
+        bull1.move(worldWidth,worldHeight);
+        bull2.move(worldWidth,worldHeight);
+        bull3.move(worldWidth,worldHeight);
+        bull4.move(worldWidth,worldHeight);
+        bull5.move(worldWidth,worldHeight);
+        bull6.move(worldWidth,worldHeight);
 
         blueCowboy.move();
         redCowboy.move();
@@ -137,259 +148,55 @@ public class BasicGameApp implements Runnable, KeyListener{
             sheep.move();
         }
         stopBull();
+
+        double targetX = redCowboy.xpos - halfScreenW;
+        double targetY = redCowboy.ypos - halfScreenH;
+
+        cameraX += (targetX - cameraX) * 0.1;
+        cameraY += (targetY - cameraY) * 0.1;
+
+        if (cameraX < 0) cameraX = 0;
+        if (cameraY < 0) cameraY = 0;
+        if (cameraX > worldWidth - WIDTH) cameraX = worldWidth - WIDTH;
+        if (cameraY > worldHeight - HEIGHT) cameraY = worldHeight - HEIGHT;
+
     }
 
     public void checkCrashAndToss() {
-        if (bull1.rect.intersects(redCowboy.rect)) {
+        int pushBack = 10;
 
-            if (bull1.xpos < redCowboy.xpos) {
-                redCowboy.xpos += 50;
-            } else {
-                redCowboy.xpos -= 50;
-            }
+        Bull[] bulls = {bull1, bull2, bull3, bull4, bull5, bull6};
 
-            if (bull1.ypos < redCowboy.ypos) {
-                redCowboy.ypos += 50;
-            } else {
-                redCowboy.ypos -= 50;
-            }
+        for (Bull b : bulls) {
 
-            if (redCowboy.xpos < 0) redCowboy.xpos = 0;
-            if (redCowboy.xpos + redCowboy.width > WIDTH) redCowboy.xpos = WIDTH - redCowboy.width;
-            if (redCowboy.ypos < 0) redCowboy.ypos = 0;
-            if (redCowboy.ypos + redCowboy.height > HEIGHT) redCowboy.ypos = HEIGHT - redCowboy.height;
-
-            if (healthBarRed >0) {
-                healthBarRed--;
-            }
-
-        }
-
-        if (bull2.rect.intersects(blueCowboy.rect)) {
-            if (bull2.xpos < blueCowboy.xpos) {
-                blueCowboy.xpos += 50;
-
-            } else {
-                blueCowboy.xpos -= 50;
-            }
-
-            if (bull2.ypos < blueCowboy.ypos) {
-                blueCowboy.ypos += 50;
-            } else {
-                blueCowboy.ypos -= 50;
-            }
-
-            if (blueCowboy.xpos < 0) blueCowboy.xpos = 0;
-            if (blueCowboy.xpos + blueCowboy.width > WIDTH) blueCowboy.xpos = WIDTH - blueCowboy.width;
-            if (blueCowboy.ypos < 0) blueCowboy.ypos = 0;
-            if (blueCowboy.ypos + blueCowboy.height > HEIGHT) blueCowboy.ypos = HEIGHT - blueCowboy.height;
-
-            if (healthBarBlue >0) {
-                healthBarBlue--;
-            }
-
-        }
-        if (bull3.rect.intersects(blueCowboy.rect)) {
-            if (bull3.xpos < blueCowboy.xpos) {
-                blueCowboy.xpos += 50;
-
-            } else {
-                blueCowboy.xpos -= 50;
-            }
-
-            if (bull3.ypos < blueCowboy.ypos) {
-                blueCowboy.ypos += 50;
-            } else {
-                blueCowboy.ypos -= 50;
-            }
-
-            if (blueCowboy.xpos < 0) blueCowboy.xpos = 0;
-            if (blueCowboy.xpos + blueCowboy.width > WIDTH) blueCowboy.xpos = WIDTH - blueCowboy.width;
-            if (blueCowboy.ypos < 0) blueCowboy.ypos = 0;
-            if (blueCowboy.ypos + blueCowboy.height > HEIGHT) blueCowboy.ypos = HEIGHT - blueCowboy.height;
-
-            if (healthBarBlue >0) {
-                healthBarBlue--;
-            }
-
-        }
-
-        if (bull3.rect.intersects(redCowboy.rect)) {
-            if (bull3.xpos < redCowboy.xpos) {
-                redCowboy.xpos += 50;
-
-            } else {
-                redCowboy.xpos -= 50;
-            }
-
-            if (bull3.ypos < redCowboy.ypos) {
-                redCowboy.ypos += 50;
-            } else {
-                redCowboy.ypos -= 50;
-            }
-
-            if (redCowboy.xpos < 0) redCowboy.xpos = 0;
-            if (redCowboy.xpos + redCowboy.width > WIDTH) redCowboy.xpos = WIDTH - redCowboy.width;
-            if (redCowboy.ypos < 0) redCowboy.ypos = 0;
-            if (redCowboy.ypos + redCowboy.height > HEIGHT) redCowboy.ypos = HEIGHT - redCowboy.height;
-
-            if (healthBarRed >0) {
-                healthBarRed--;
-            }
-        }
-
-        if (bull4.rect.intersects(blueCowboy.rect)) {
-            if (bull4.xpos < blueCowboy.xpos) {
-                blueCowboy.xpos += 50;
-
-            } else {
-                blueCowboy.xpos -= 50;
-            }
-
-            if (bull4.ypos < blueCowboy.ypos) {
-                blueCowboy.ypos += 50;
-            } else {
-                blueCowboy.ypos -= 50;
-            }
-
-            if (blueCowboy.xpos < 0) blueCowboy.xpos = 0;
-            if (blueCowboy.xpos + blueCowboy.width > WIDTH) blueCowboy.xpos = WIDTH - blueCowboy.width;
-            if (blueCowboy.ypos < 0) blueCowboy.ypos = 0;
-            if (blueCowboy.ypos + blueCowboy.height > HEIGHT) blueCowboy.ypos = HEIGHT - blueCowboy.height;
-
-            if (healthBarBlue >0) {
-                healthBarBlue--;
-            }
-
-        }
-        if (bull4.rect.intersects(redCowboy.rect)) {
-
-            if (bull4.xpos < redCowboy.xpos) {
-                redCowboy.xpos += 50;
-            } else {
-                redCowboy.xpos -= 50;
-            }
-
-            if (bull4.ypos < redCowboy.ypos) {
-                redCowboy.ypos += 50;
-            } else {
-                redCowboy.ypos -= 50;
-            }
-
-
-            if (redCowboy.xpos < 0) redCowboy.xpos = 0;
-            if (redCowboy.xpos + redCowboy.width > WIDTH) redCowboy.xpos = WIDTH - redCowboy.width;
-            if (redCowboy.ypos < 0) redCowboy.ypos = 0;
-            if (redCowboy.ypos + redCowboy.height > HEIGHT) redCowboy.ypos = HEIGHT - redCowboy.height;
-
-            if (healthBarRed >0) {
-                healthBarRed--;
-            }
-
-        }
-
-        if (score >20d) {
-            if (bull5.rect.intersects(blueCowboy.rect)) {
-                if (bull5.xpos < blueCowboy.xpos) {
-                    blueCowboy.xpos += 50;
-
-                } else {
-                    blueCowboy.xpos -= 50;
-                }
-
-                if (bull5.ypos < blueCowboy.ypos) {
-                    blueCowboy.ypos += 50;
-                } else {
-                    blueCowboy.ypos -= 50;
-                }
-
-                if (blueCowboy.xpos < 0) blueCowboy.xpos = 0;
-                if (blueCowboy.xpos + blueCowboy.width > WIDTH) blueCowboy.xpos = WIDTH - blueCowboy.width;
-                if (blueCowboy.ypos < 0) blueCowboy.ypos = 0;
-                if (blueCowboy.ypos + blueCowboy.height > HEIGHT) blueCowboy.ypos = HEIGHT - blueCowboy.height;
-
-                if (healthBarBlue > 0) {
-                    healthBarBlue--;
-                }
-
-            }
-            if (bull5.rect.intersects(redCowboy.rect)) {
-
-                if (bull5.xpos < redCowboy.xpos) {
-                    redCowboy.xpos += 50;
-                } else {
-                    redCowboy.xpos -= 50;
-                }
-
-                if (bull5.ypos < redCowboy.ypos) {
-                    redCowboy.ypos += 50;
-                } else {
-                    redCowboy.ypos -= 50;
-                }
-
+            if (b.rect.intersects(redCowboy.rect)) {
+                if (b.xpos < redCowboy.xpos) redCowboy.xpos += pushBack;
+                else redCowboy.xpos -= pushBack;
+                if (b.ypos < redCowboy.ypos) redCowboy.ypos += pushBack;
+                else redCowboy.ypos -= pushBack;
 
                 if (redCowboy.xpos < 0) redCowboy.xpos = 0;
-                if (redCowboy.xpos + redCowboy.width > WIDTH) redCowboy.xpos = WIDTH - redCowboy.width;
+                if (redCowboy.xpos + redCowboy.width > worldWidth) redCowboy.xpos = worldWidth - redCowboy.width;
                 if (redCowboy.ypos < 0) redCowboy.ypos = 0;
-                if (redCowboy.ypos + redCowboy.height > HEIGHT) redCowboy.ypos = HEIGHT - redCowboy.height;
+                if (redCowboy.ypos + redCowboy.height > worldHeight) redCowboy.ypos = worldHeight - redCowboy.height;
 
-                if (healthBarRed > 0) {
-                    healthBarRed--;
-                }
-
+                if (healthBarRed > 0) healthBarRed--;
             }
-        }
 
-        if (score >20) {
-            if (bull6.rect.intersects(blueCowboy.rect)) {
-                if (bull6.xpos < blueCowboy.xpos) {
-                    blueCowboy.xpos += 50;
-
-                } else {
-                    blueCowboy.xpos -= 50;
-                }
-
-                if (bull6.ypos < blueCowboy.ypos) {
-                    blueCowboy.ypos += 50;
-                } else {
-                    blueCowboy.ypos -= 50;
-                }
+            if (b.rect.intersects(blueCowboy.rect)) {
+                if (b.xpos < blueCowboy.xpos) blueCowboy.xpos += pushBack;
+                else blueCowboy.xpos -= pushBack;
+                if (b.ypos < blueCowboy.ypos) blueCowboy.ypos += pushBack;
+                else blueCowboy.ypos -= pushBack;
 
                 if (blueCowboy.xpos < 0) blueCowboy.xpos = 0;
-                if (blueCowboy.xpos + blueCowboy.width > WIDTH) blueCowboy.xpos = WIDTH - blueCowboy.width;
+                if (blueCowboy.xpos + blueCowboy.width > worldWidth) blueCowboy.xpos = worldWidth - blueCowboy.width;
                 if (blueCowboy.ypos < 0) blueCowboy.ypos = 0;
-                if (blueCowboy.ypos + blueCowboy.height > HEIGHT) blueCowboy.ypos = HEIGHT - blueCowboy.height;
+                if (blueCowboy.ypos + blueCowboy.height > worldHeight) blueCowboy.ypos = worldHeight - blueCowboy.height;
 
-                if (healthBarBlue > 0) {
-                    healthBarBlue--;
-                }
-
+                if (healthBarBlue > 0) healthBarBlue--;
             }
-            if (bull6.rect.intersects(redCowboy.rect)) {
 
-                if (bull6.xpos < redCowboy.xpos) {
-                    redCowboy.xpos += 50;
-                } else {
-                    redCowboy.xpos -= 50;
-                }
-
-                if (bull6.ypos < redCowboy.ypos) {
-                    redCowboy.ypos += 50;
-                } else {
-                    redCowboy.ypos -= 50;
-                }
-
-
-                if (redCowboy.xpos < 0) redCowboy.xpos = 0;
-                if (redCowboy.xpos + redCowboy.width > WIDTH) redCowboy.xpos = WIDTH - redCowboy.width;
-                if (redCowboy.ypos < 0) redCowboy.ypos = 0;
-                if (redCowboy.ypos + redCowboy.height > HEIGHT) redCowboy.ypos = HEIGHT - redCowboy.height;
-
-                if (healthBarRed > 0) {
-                    healthBarRed--;
-                }
-
-            }
         }
 
     }
@@ -399,20 +206,21 @@ public class BasicGameApp implements Runnable, KeyListener{
             if (redCowboy.rect.intersects(sheep.rect) && healthBarRed >0 || blueCowboy.rect.intersects(sheep.rect) && healthBarBlue >0) {
                 sheep.isAlive = false;
                 score++;
-                sheep.xpos = (int)(Math.random() * (WIDTH - sheep.width));
-                sheep.ypos = (int)(Math.random() * (HEIGHT - sheep.height));
+                sheep.xpos = (int)(Math.random() * (worldWidth - sheep.width));
+                sheep.ypos = (int)(Math.random() * (worldHeight - sheep.height));
                 sheep.isAlive = true;
-                sheep.rect = new Rectangle(sheep.xpos, sheep.ypos, sheep.width, sheep.height);
+                sheep.rect.setBounds(sheep.xpos, sheep.ypos, sheep.width, sheep.height);
+
             }
         }
         if (chicken.isAlive) {
             if (redCowboy.rect.intersects(chicken.rect) && healthBarRed >0 || blueCowboy.rect.intersects(chicken.rect) && healthBarBlue >0) {
                 chicken.isAlive = false;
                 score+=2;
-                chicken.xpos = (int)(Math.random() * (WIDTH - sheep.width));
-                chicken.ypos = (int)(Math.random() * (HEIGHT - sheep.height));
+                chicken.xpos = (int)(Math.random() * (worldWidth - sheep.width));
+                chicken.ypos = (int)(Math.random() * (worldHeight - sheep.height));
                 chicken.isAlive = true;
-                chicken.rect = new Rectangle(chicken.xpos, chicken.ypos, chicken.width, chicken.height);
+                chicken.rect.setBounds(chicken.xpos, chicken.ypos, chicken.width, chicken.height);
             }
         }
     }
@@ -441,24 +249,30 @@ public class BasicGameApp implements Runnable, KeyListener{
         Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
         g.clearRect(0, 0, WIDTH, HEIGHT);
 
-        g.drawImage(rodeo, 0, 0, WIDTH, HEIGHT, null);
-        g.drawImage(bullImage, bull1.xpos, bull1.ypos, bull1.width, bull1.height, null);
-        g.drawImage(bullImage, bull2.xpos, bull2.ypos, bull2.width, bull2.height, null);
-        g.drawImage(bullImage, bull3.xpos, bull3.ypos, bull3.width, bull3.height, null);
-        g.drawImage(bullImage, bull4.xpos, bull4.ypos, bull4.width, bull4.height, null);
-        if (score > 20) {
-            g.drawImage(bullImage, bull5.xpos, bull5.ypos, bull5.width, bull5.height, null);
-            g.drawImage(bullImage, bull6.xpos, bull6.ypos, bull6.width, bull6.height, null);
+        g.drawImage(rodeo, - (int) cameraX, - (int) cameraY, worldWidth, worldHeight, null);
 
+        g.drawImage(bullImage, (int) (bull1.xpos - cameraX), (int) (bull1.ypos - cameraY), bull1.width, bull1.height, null);
+        g.drawImage(bullImage, (int) (bull2.xpos - cameraX), (int) (bull2.ypos - cameraY), bull2.width, bull2.height, null);
+        g.drawImage(bullImage, (int) (bull3.xpos - cameraX), (int) (bull3.ypos - cameraY), bull3.width, bull3.height, null);
+        g.drawImage(bullImage, (int) (bull4.xpos - cameraX), (int) (bull4.ypos - cameraY), bull4.width, bull4.height, null);
+
+        if (score > 20) {
+            g.drawImage(bullImage, (int) (bull5.xpos - cameraX), (int) (bull5.ypos - cameraY), bull5.width, bull5.height, null);
+            g.drawImage(bullImage, (int) (bull6.xpos - cameraX), (int) (bull6.ypos - cameraY), bull6.width, bull6.height, null);
         }
-        g.drawImage(redcowboyImage, redCowboy.xpos, redCowboy.ypos, redCowboy.width, redCowboy.height, null);
-        g.drawImage(bluecowboyImage, blueCowboy.xpos, blueCowboy.ypos, blueCowboy.width, blueCowboy.height, null);
+
+        int drawX = (int)(redCowboy.xpos - cameraX);
+        int drawY = (int)(redCowboy.ypos - cameraY);
+        g.drawImage(redcowboyImage, drawX, drawY, redCowboy.width, redCowboy.height, null);
+
+
+        g.drawImage(bluecowboyImage, (int) (blueCowboy.xpos -cameraX), (int) (blueCowboy.ypos - cameraY), blueCowboy.width, blueCowboy.height, null);
 
         if (sheep.isAlive) {
-            g.drawImage(sheepImage, sheep.xpos, sheep.ypos, sheep.width, sheep.height, null);
+            g.drawImage(sheepImage, (int) (sheep.xpos -cameraX), (int) (sheep.ypos -cameraY), sheep.width, sheep.height, null);
         }
         if (chicken.isAlive) {
-            g.drawImage(chickenImage, chicken.xpos, chicken.ypos, chicken.width, chicken.height, null);
+            g.drawImage(chickenImage, (int) (chicken.xpos - cameraX), (int) (chicken.ypos -cameraY), chicken.width, chicken.height, null);
         }
 
         g.setColor(Color.WHITE);
@@ -574,12 +388,20 @@ public class BasicGameApp implements Runnable, KeyListener{
                 bull2 = new Bull("bull", 100, 10);
                 bull3 = new Bull("bull", 500, 100);
                 bull4 = new Bull("bull", 250, 250);
+                bull5 = new Bull("bull", 880, 580);
+                bull6 = new Bull("bull", 880, 580);
+
                 redCowboy = new RedCowboy("RedCowboy", 263, 561);
                 blueCowboy = new BlueCowboy("BlueCowboy", 132, 236);
-                sheep = new Sheep("SheepItem",40,40);
+                sheep = new Sheep("SheepItem", 40, 40);
+                chicken = new Chicken("Chicken", 900, 650);
+
                 healthBarBlue = 5;
                 healthBarRed = 5;
                 score = 0;
+
+                cameraX = redCowboy.xpos - WIDTH / 2.0;
+                cameraY = redCowboy.ypos - HEIGHT / 2.0;
             }
 
 
@@ -590,36 +412,28 @@ public class BasicGameApp implements Runnable, KeyListener{
     public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() == 38) { //this is up
             redCowboy.dy = 0;
-            redCowboy.dx = 0;
         }
         if (e.getKeyCode() == 40) { //this is down
             redCowboy.dy = 0;
-            redCowboy.dx = 0;
         }
         if (e.getKeyCode() == 37) { //this is left
-            redCowboy.dy = 0;
             redCowboy.dx = 0;
         }
         if (e.getKeyCode() == 39) {//this is right
-            redCowboy.dy = 0;
             redCowboy.dx = 0;
         }
 
 
         if (e.getKeyCode() == 87) { //this is up
             blueCowboy.dy = 0;
-            blueCowboy.dx = 0;
         }
         if (e.getKeyCode() == 83) { //this is down
             blueCowboy.dy = 0;
-            blueCowboy.dx = 0;
         }
         if (e.getKeyCode() == 65) { //this is left
-            blueCowboy.dy = 0;
             blueCowboy.dx = 0;
         }
         if (e.getKeyCode() == 68) {//this is right
-            blueCowboy.dy = 0;
             blueCowboy.dx = 0;
         }
 
@@ -630,72 +444,3 @@ public class BasicGameApp implements Runnable, KeyListener{
     // Bandages to gain health back
     // Add more bulls
 }
-
-
-
-
-
-//    public void checkCrashRed(){
-//        if (bull.rect.intersects(redCowboy.rect) && firstCrashRed){
-//            redCowboy.dy = -redCowboy.dy;
-//            firstCrashRed = false;
-//        }
-//
-//        if (!bull.rect.intersects(redCowboy.rect)) {
-//            firstCrashRed = true;
-//        }
-//    }
-//    public void checkCrashBlue(){
-//        if (bull.rect.intersects(blueCowboy.rect) && firstCrashBlue){
-//            blueCowboy.dx = -blueCowboy.dx;
-//            firstCrashBlue = false;
-//        }
-//        if (!bull.rect.intersects(blueCowboy.rect)) {
-//            firstCrashBlue = true;
-//        }
-//    }
-//    public void checkCrashCowboys() {
-//        if (redCowboy.rect.intersects(blueCowboy.rect) && firstCrashCowboys) {
-//
-//            redCowboy.dx = -redCowboy.dx;
-//            redCowboy.dy = -redCowboy.dy;
-//            blueCowboy.dx = -blueCowboy.dx;
-//            blueCowboy.dy = -blueCowboy.dy;
-//
-//            firstCrashCowboys = false;
-//        }
-//
-//        if (!redCowboy.rect.intersects(blueCowboy.rect)) {
-//            firstCrashCowboys = true;
-//        }
-//    }
-
-
-
-//    public void checkCrash(){
-//        if (bull.rect.intersects(redCowboy.rect) && firstCrashRed){
-//            redCowboy.dy = -redCowboy.dy;
-//            firstCrashRed = false;
-//        }
-//
-//        if (!bull.rect.intersects(redCowboy.rect)) {
-//            firstCrashRed = true;
-//        }
-//        if (bull.rect.intersects(blueCowboy.rect) && firstCrashBlue){
-//            blueCowboy.dx = -blueCowboy.dx;
-//            firstCrashBlue = false;
-//        }
-//        if (!bull.rect.intersects(blueCowboy.rect)) {
-//            firstCrashBlue = true;
-//        }
-//        if (!redCowboy.rect.intersects(blueCowboy.rect)) {
-//            redCowboy.dx = -redCowboy.dx;
-//            redCowboy.dy = -redCowboy.dy;
-//            blueCowboy.dx = -blueCowboy.dx;
-//            blueCowboy.dy = -blueCowboy.dy;
-//        }
-//            firstCrashCowboy = false;
-//        if (!redCowboy.rect.intersects(blueCowboy.rect)) {
-//            firstCrashCowboy = true;
-//        }
-//    }

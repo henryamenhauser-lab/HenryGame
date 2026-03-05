@@ -34,24 +34,22 @@ public class Bull {
     }
 
 
-    public void move() {
+    public void move(int worldWidth, int worldHeight) {
         xpos = xpos + dx;
         ypos = ypos + dy;
-        rect = new Rectangle(xpos, ypos, width, height);
 
+        if (xpos < 0 || xpos + width > worldWidth) {
+            dx *= -1;
+            if (xpos < 0) xpos = 0;
+            if (xpos + width > worldWidth) xpos = worldWidth - width;
+        }
+        if (ypos < 0 || ypos + height > worldHeight) {
+            dy *= -1;
+            if (ypos < 0) ypos = 0;
+            if (ypos + height > worldHeight) ypos = worldHeight - height;
+        }
+        rect.setBounds(xpos, ypos, width, height);
 
-        if(xpos >= 1000 - width ){
-            dx = -dx;
-        }
-        if (ypos >= 700 - height){;
-            dy = -dy;
-        }
-        if(xpos <= 0 ){
-            dx = -dx;
-        }
-        if (ypos <= 0){
-            dy = -dy;
-        }
     }
 
     public void wrap() {

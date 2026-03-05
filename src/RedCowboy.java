@@ -1,25 +1,20 @@
 import java.awt.*;
-
 /**
  * Created by chales on 11/6/2017.
  * Edits by mblair on 10/27/2025
  */
 public class RedCowboy {
 
-    //VARIABLE DECLARATION SECTION
-    //Here's where you state which variables you are going to use.
-    public String name;               //name of the hero
-    public int xpos;                  //the x position
-    public int ypos;                  //the y position
-    public int dx;                    //the speed of the hero in the x direction
-    public int dy;                    //the speed of the hero in the y direction
-    public int width;                 //the width of the hero image
-    public int height;                //the height of the hero image
-    public boolean isAlive;           //a boolean to denote if the hero is alive or dead
+    public String name;
+    public double xpos;
+    public double ypos;
+    public double dx;
+    public double dy;
+    public int width;
+    public int height;
+    public boolean isAlive;
     public Rectangle rect;
 
-    //This is a constructor that takes 3 parameters.
-    // This allows us to specify the hero's name and position when we build it.
     public RedCowboy(String pName, int pXpos, int pYpos) {
         name = pName;
         xpos = pXpos;
@@ -29,47 +24,18 @@ public class RedCowboy {
         width = 30;
         height = 60;
         isAlive = true;
-        rect = new Rectangle(xpos, ypos, width, height);
-
+        rect = new Rectangle((int)xpos, (int)ypos, width, height);
     }
-
 
     public void move() {
-        xpos = xpos + dx;
-        ypos = ypos + dy;
-        rect = new Rectangle(xpos, ypos, width, height);
-        if (xpos > 1000-width){
-            xpos = 1000-width;
-        }
-        if (xpos <0){
-            xpos = 0;
-        }
-        if (ypos > 700-height){
-            ypos = 700-height;
-        }
-        if (ypos <0){
-            ypos = 0;
-        }
+        xpos += dx;
+        ypos += dy;
+
+        if(xpos < 0) xpos = 0;
+        if(ypos < 0) ypos = 0;
+        if(xpos > BasicGameApp.worldWidth - width) xpos = BasicGameApp.worldWidth - width;
+        if(ypos > BasicGameApp.worldHeight - height) ypos = BasicGameApp.worldHeight - height;
+
+        rect.setBounds((int)xpos, (int)ypos, width, height);
     }
-
-    public void wrap() {
-        xpos = xpos + dx;
-        ypos = ypos + dy;
-        rect = new Rectangle(xpos, ypos, width, height);
-
-        if (xpos > 1000){
-            xpos = 0;
-        }
-        if (ypos > 700){
-            ypos = 0;
-        }
-        if (xpos < 0 ){
-            xpos = 1000;
-        }
-        if (ypos < 0){
-            ypos = 700;
-        }
-    }
-
-
 }
