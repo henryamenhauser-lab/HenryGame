@@ -6,10 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="ca716079-3958-47ec-b9dd-e8ad907e0b9d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/BasicGameApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BasicGameApp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Bull.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Bull.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Chicken.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Chicken.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/RedCowboy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RedCowboy.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -120,7 +116,15 @@
       <option name="project" value="LOCAL" />
       <updated>1772680141980</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="New movement system is good. A lot of other stuff is broken now. need to work on image size to make game look better. also need to fix collisions they are  buggy">
+      <option name="closed" value="true" />
+      <created>1772726796366</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1772726796366</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -140,7 +144,8 @@
     <MESSAGE value="Working on health and end of game" />
     <MESSAGE value="added end of game and some mechanics to make game harder for HW" />
     <MESSAGE value="added chicken worth 2 points highscore and MORE BULLS that bounce and follow the sheep" />
-    <option name="LAST_COMMIT_MESSAGE" value="added chicken worth 2 points highscore and MORE BULLS that bounce and follow the sheep" />
+    <MESSAGE value="New movement system is good. A lot of other stuff is broken now. need to work on image size to make game look better. also need to fix collisions they are  buggy" />
+    <option name="LAST_COMMIT_MESSAGE" value="New movement system is good. A lot of other stuff is broken now. need to work on image size to make game look better. also need to fix collisions they are  buggy" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/BasicGameTemplate$BasicGameApp.ic" NAME="BasicGameApp Coverage Results" MODIFIED="1764860541761" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
