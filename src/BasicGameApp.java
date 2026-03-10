@@ -42,6 +42,8 @@ public class BasicGameApp implements Runnable, KeyListener{
     public int highScore = 0;
     public int healthBarRed = 5;
     public int healthBarBlue = 5;
+    public int redDashTime = 0;
+    public int blueDashTime = 0;
 
     public double cameraX;
     public double cameraY;
@@ -143,6 +145,7 @@ public class BasicGameApp implements Runnable, KeyListener{
 
         checkCrashAndToss();
         collectSheepAndChicken();
+        dash();
 
         if (score >10) {
             sheep.move();
@@ -240,6 +243,22 @@ public class BasicGameApp implements Runnable, KeyListener{
             bull4.dx = 0;
             bull4.dy = 0;
         }
+    }
+
+    public void dash() {
+
+        if (redDashTime > 0) {
+            redCowboy.dx *= 2;
+            redCowboy.dy *= 2;
+            redDashTime--;
+        }
+        if (blueDashTime > 0) {
+            blueCowboy.dx *= 2;blueCowboy.dy *= 2;
+            blueDashTime--;
+        }
+
+
+
     }
 
 
@@ -403,6 +422,14 @@ public class BasicGameApp implements Runnable, KeyListener{
                 cameraX = redCowboy.xpos - WIDTH / 2.0;
                 cameraY = redCowboy.ypos - HEIGHT / 2.0;
             }
+
+        if (e.getKeyCode() == 16) { // SHIFT
+            redDashTime = 10;
+        }
+
+        if (e.getKeyCode() == 32) { // SPACE
+            blueDashTime = 10;
+        }
 
 
 

@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="ca716079-3958-47ec-b9dd-e8ad907e0b9d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/BasicGameApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BasicGameApp.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -124,7 +125,15 @@
       <option name="project" value="LOCAL" />
       <updated>1772726796366</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="This is to make sure i have a commit before doing homework">
+      <option name="closed" value="true" />
+      <created>1773004418589</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1773004418589</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -145,7 +154,8 @@
     <MESSAGE value="added end of game and some mechanics to make game harder for HW" />
     <MESSAGE value="added chicken worth 2 points highscore and MORE BULLS that bounce and follow the sheep" />
     <MESSAGE value="New movement system is good. A lot of other stuff is broken now. need to work on image size to make game look better. also need to fix collisions they are  buggy" />
-    <option name="LAST_COMMIT_MESSAGE" value="New movement system is good. A lot of other stuff is broken now. need to work on image size to make game look better. also need to fix collisions they are  buggy" />
+    <MESSAGE value="This is to make sure i have a commit before doing homework" />
+    <option name="LAST_COMMIT_MESSAGE" value="This is to make sure i have a commit before doing homework" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/BasicGameTemplate$BasicGameApp.ic" NAME="BasicGameApp Coverage Results" MODIFIED="1764860541761" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
