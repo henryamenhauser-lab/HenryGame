@@ -26,8 +26,8 @@ public class BlueCowboy {
         ypos = pYpos;
         dx = 0;
         dy = 0;
-        width = 30;
-        height = 60;
+        width = 40;
+        height = 70;
         isAlive = true;
         rect = new Rectangle(xpos, ypos, width, height);
 

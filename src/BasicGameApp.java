@@ -256,8 +256,30 @@ public class BasicGameApp implements Runnable, KeyListener{
             blueCowboy.dx *= 2;blueCowboy.dy *= 2;
             blueDashTime--;
         }
+    }
 
+    public void menu() {
+        Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
 
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Arial", Font.BOLD, 30));
+        g.drawString("Menu F&Q", 500, 350);
+
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Arial", Font.PLAIN, 15));
+        g.drawString("Sheep = 1", 400, 400);
+
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Arial", Font.PLAIN, 15));
+        g.drawString("Chicken = 2", 600, 400);
+
+        g.setColor(Color.RED);
+        g.setFont(new Font("Arial", Font.PLAIN, 10));
+        g.drawString("Player 1 WASD  || Dash = shift", 400, 500);
+
+        g.setColor(Color.BLUE);
+        g.setFont(new Font("Arial", Font.PLAIN, 10));
+        g.drawString("Player 2 < ^ >  ||  Dash = space", 600, 500);
 
     }
 
@@ -322,6 +344,8 @@ public class BasicGameApp implements Runnable, KeyListener{
             if (score > highScore) {
                 highScore = score;
             }
+
+
         }
 
         g.dispose();
@@ -423,12 +447,18 @@ public class BasicGameApp implements Runnable, KeyListener{
                 cameraY = redCowboy.ypos - HEIGHT / 2.0;
             }
 
+
+
         if (e.getKeyCode() == 16) { // SHIFT
             redDashTime = 10;
         }
 
         if (e.getKeyCode() == 32) { // SPACE
             blueDashTime = 10;
+        }
+
+        if (e.getKeyCode() == 77) {//this is (m)
+            menu();
         }
 
 
