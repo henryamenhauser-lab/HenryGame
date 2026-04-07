@@ -65,7 +65,9 @@ public class BasicGameApp implements Runnable, KeyListener{
     Sheep sheep;
     Image sheepImage;
 
-    Chicken chicken;
+    Chicken chicken1;
+    Chicken chicken2;
+    Chicken chicken3;
     Image chickenImage;
 
     Image rodeo = Toolkit.getDefaultToolkit().getImage("RodeoArena.png");
@@ -106,7 +108,10 @@ public class BasicGameApp implements Runnable, KeyListener{
         sheep = new Sheep("SheepItem",40,40);
         sheepImage = Toolkit.getDefaultToolkit().getImage("Sheep.png");
 
-        chicken = new Chicken("Chicken",900,650);
+        chicken1 = new Chicken("Chicken1",900,650);
+        chicken2 = new Chicken("Chicken2",880,630);
+        chicken3 = new Chicken("Chicken3",860,610);
+
         chickenImage = Toolkit.getDefaultToolkit().getImage("Chicken.png");
 
     }
@@ -129,8 +134,8 @@ public class BasicGameApp implements Runnable, KeyListener{
         bull1.chase((int) redCowboy.xpos, (int) redCowboy.ypos,3);
         bull2.chase(blueCowboy.xpos, blueCowboy.ypos, 3);
         bull6.chase(sheep.xpos, sheep.ypos,2.5);
-        chicken.runAway((int) redCowboy.xpos, (int) redCowboy.ypos,5);
-        chicken.runAway(blueCowboy.xpos,blueCowboy.ypos,5);
+        chicken1.runAway((int) redCowboy.xpos, (int) redCowboy.ypos,5);
+        chicken1.runAway(blueCowboy.xpos,blueCowboy.ypos,5);
 
         bull1.move(worldWidth,worldHeight);
         bull2.move(worldWidth,worldHeight);
@@ -141,10 +146,13 @@ public class BasicGameApp implements Runnable, KeyListener{
 
         blueCowboy.move();
         redCowboy.move();
-        chicken.move();
+        chicken1.move();
+        chicken2.move();
+        chicken3.move();
 
         checkCrashAndToss();
-        collectSheepAndChicken();
+        collectSheep();
+        collectChicken();
         dash();
 
         if (score >10) {
@@ -166,7 +174,7 @@ public class BasicGameApp implements Runnable, KeyListener{
     }
 
     public void checkCrashAndToss() {
-        int pushBack = 10;
+        int pushBack = 100;
 
         Bull[] bulls = {bull1, bull2, bull3, bull4, bull5, bull6};
 
@@ -204,29 +212,54 @@ public class BasicGameApp implements Runnable, KeyListener{
 
     }
 
-    public void collectSheepAndChicken() {
+    public void collectSheep() {
+
         if (sheep.isAlive) {
-            if (redCowboy.rect.intersects(sheep.rect) && healthBarRed >0 || blueCowboy.rect.intersects(sheep.rect) && healthBarBlue >0) {
+            if (redCowboy.rect.intersects(sheep.rect) && healthBarRed > 0 || blueCowboy.rect.intersects(sheep.rect) && healthBarBlue > 0) {
                 sheep.isAlive = false;
                 score++;
-                sheep.xpos = (int)(Math.random() * (worldWidth - sheep.width));
-                sheep.ypos = (int)(Math.random() * (worldHeight - sheep.height));
+                sheep.xpos = (int) (Math.random() * (worldWidth - sheep.width));
+                sheep.ypos = (int) (Math.random() * (worldHeight - sheep.height));
                 sheep.isAlive = true;
                 sheep.rect.setBounds(sheep.xpos, sheep.ypos, sheep.width, sheep.height);
 
             }
         }
-        if (chicken.isAlive) {
-            if (redCowboy.rect.intersects(chicken.rect) && healthBarRed >0 || blueCowboy.rect.intersects(chicken.rect) && healthBarBlue >0) {
-                chicken.isAlive = false;
-                score+=2;
-                chicken.xpos = (int)(Math.random() * (worldWidth - sheep.width));
-                chicken.ypos = (int)(Math.random() * (worldHeight - sheep.height));
-                chicken.isAlive = true;
-                chicken.rect.setBounds(chicken.xpos, chicken.ypos, chicken.width, chicken.height);
+    }
+        public void collectChicken() {
+
+            Chicken[] chickens = {chicken1, chicken2, chicken3};
+
+            for (Chicken c : chickens) {
+
+                if (c.isAlive) {
+                    if (redCowboy.rect.intersects(c.rect) && healthBarRed > 0 || blueCowboy.rect.intersects(c.rect) && healthBarBlue > 0) {
+                        if (c.name == "Chicken1") {
+                            chicken1.isAlive = false;
+                            score += 2;
+                            chicken1.xpos = (int) (Math.random() * (worldWidth - sheep.width));
+                            chicken1.ypos = (int) (Math.random() * (worldHeight - sheep.height));
+                            chicken1.isAlive = true;
+                            chicken1.rect.setBounds(chicken1.xpos, chicken1.ypos, chicken1.width, chicken1.height);
+                        } else if (c.name == "Chicken2") {
+                            chicken2.isAlive = false;
+                            score += 2;
+                            chicken2.xpos = (int) (Math.random() * (worldWidth - sheep.width));
+                            chicken2.ypos = (int) (Math.random() * (worldHeight - sheep.height));
+                            chicken2.isAlive = true;
+                            chicken2.rect.setBounds(chicken2.xpos, chicken2.ypos, chicken2.width, chicken2.height);
+                        } else if (c.name == "Chicken3") {
+                            chicken3.isAlive = false;
+                            score += 2;
+                            chicken3.xpos = (int) (Math.random() * (worldWidth - sheep.width));
+                            chicken3.ypos = (int) (Math.random() * (worldHeight - sheep.height));
+                            chicken3.isAlive = true;
+                            chicken3.rect.setBounds(chicken3.xpos, chicken3.ypos, chicken3.width, chicken3.height);
+                        }
+                    }
+                }
             }
         }
-    }
 
     public void stopBull() {
         if (healthBarBlue <1) {
@@ -312,8 +345,8 @@ public class BasicGameApp implements Runnable, KeyListener{
         if (sheep.isAlive) {
             g.drawImage(sheepImage, (int) (sheep.xpos -cameraX), (int) (sheep.ypos -cameraY), sheep.width, sheep.height, null);
         }
-        if (chicken.isAlive) {
-            g.drawImage(chickenImage, (int) (chicken.xpos - cameraX), (int) (chicken.ypos -cameraY), chicken.width, chicken.height, null);
+        if (chicken1.isAlive) {
+            g.drawImage(chickenImage, (int) (chicken1.xpos - cameraX), (int) (chicken1.ypos -cameraY), chicken1.width, chicken1.height, null);
         }
 
         g.setColor(Color.WHITE);
@@ -437,7 +470,7 @@ public class BasicGameApp implements Runnable, KeyListener{
                 redCowboy = new RedCowboy("RedCowboy", 263, 561);
                 blueCowboy = new BlueCowboy("BlueCowboy", 132, 236);
                 sheep = new Sheep("SheepItem", 40, 40);
-                chicken = new Chicken("Chicken", 900, 650);
+                chicken1 = new Chicken("Chicken", 900, 650);
 
                 healthBarBlue = 5;
                 healthBarRed = 5;
