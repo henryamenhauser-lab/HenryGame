@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ca716079-3958-47ec-b9dd-e8ad907e0b9d" name="Changes" comment="Attempt at a menu/tutorial screen not quite working yet.">
+    <list default="true" id="ca716079-3958-47ec-b9dd-e8ad907e0b9d" name="Changes" comment="Chicken Array">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/BasicGameApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BasicGameApp.java" afterDir="false" />
     </list>
@@ -149,7 +149,15 @@
       <option name="project" value="LOCAL" />
       <updated>1775101671808</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Chicken Array">
+      <option name="closed" value="true" />
+      <created>1775567322480</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1775567322480</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -173,7 +181,8 @@
     <MESSAGE value="This is to make sure i have a commit before doing homework" />
     <MESSAGE value="HW new dash mechanic that speeds up the cowboys for a short amount of time." />
     <MESSAGE value="Attempt at a menu/tutorial screen not quite working yet." />
-    <option name="LAST_COMMIT_MESSAGE" value="Attempt at a menu/tutorial screen not quite working yet." />
+    <MESSAGE value="Chicken Array" />
+    <option name="LAST_COMMIT_MESSAGE" value="Chicken Array" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/BasicGameTemplate$BasicGameApp.ic" NAME="BasicGameApp Coverage Results" MODIFIED="1764860541761" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />

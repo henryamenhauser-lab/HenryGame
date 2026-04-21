@@ -12,6 +12,8 @@
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferStrategy;
 import java.awt.*;
 import javax.swing.JFrame;
@@ -19,7 +21,7 @@ import javax.swing.JPanel;
 
 //*******************************************************************************
 
-public class BasicGameApp implements Runnable, KeyListener{
+public class BasicGameApp implements Runnable, KeyListener, MouseListener {
 
     //Variable Definition Section
     //Declare the variables used in the program
@@ -181,17 +183,24 @@ public class BasicGameApp implements Runnable, KeyListener{
         for (Bull b : bulls) {
 
             if (b.rect.intersects(redCowboy.rect)) {
-                if (b.xpos < redCowboy.xpos) redCowboy.xpos += pushBack;
-                else redCowboy.xpos -= pushBack;
-                if (b.ypos < redCowboy.ypos) redCowboy.ypos += pushBack;
-                else redCowboy.ypos -= pushBack;
+                if (bull5.rect.intersects(redCowboy.rect) && score <20) {
 
-                if (redCowboy.xpos < 0) redCowboy.xpos = 0;
-                if (redCowboy.xpos + redCowboy.width > worldWidth) redCowboy.xpos = worldWidth - redCowboy.width;
-                if (redCowboy.ypos < 0) redCowboy.ypos = 0;
-                if (redCowboy.ypos + redCowboy.height > worldHeight) redCowboy.ypos = worldHeight - redCowboy.height;
+                } else if (bull6.rect.intersects(redCowboy.rect ) && score < 20) {
 
-                if (healthBarRed > 0) healthBarRed--;
+                } else
+                    if (b.xpos < redCowboy.xpos) redCowboy.xpos += pushBack;
+                    else redCowboy.xpos -= pushBack;
+                    if (b.ypos < redCowboy.ypos) redCowboy.ypos += pushBack;
+                    else redCowboy.ypos -= pushBack;
+
+                    if (redCowboy.xpos < 0) redCowboy.xpos = 0;
+                    if (redCowboy.xpos + redCowboy.width > worldWidth) redCowboy.xpos = worldWidth - redCowboy.width;
+                    if (redCowboy.ypos < 0) redCowboy.ypos = 0;
+                    if (redCowboy.ypos + redCowboy.height > worldHeight)
+                        redCowboy.ypos = worldHeight - redCowboy.height;
+
+                    if (healthBarRed > 0) healthBarRed--;
+
             }
 
             if (b.rect.intersects(blueCowboy.rect)) {
@@ -527,6 +536,31 @@ public class BasicGameApp implements Runnable, KeyListener{
             blueCowboy.dx = 0;
         }
 
+
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
 
     }
 
