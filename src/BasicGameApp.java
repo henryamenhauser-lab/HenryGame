@@ -31,8 +31,8 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
     public final int WIDTH = 1000;
     public final int HEIGHT = 700;
 
-    public static final int worldWidth = 3000;
-    public static final int worldHeight = 2000;
+    public static final int worldWidth = 2000;
+    public static final int worldHeight = 1000;
 
     //Declare the variables needed for the graphics
     public JFrame frame;
@@ -136,8 +136,6 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
         bull1.chase((int) redCowboy.xpos, (int) redCowboy.ypos,3);
         bull2.chase(blueCowboy.xpos, blueCowboy.ypos, 3);
         bull6.chase(sheep.xpos, sheep.ypos,2.5);
-        chicken1.runAway((int) redCowboy.xpos, (int) redCowboy.ypos,5);
-        chicken1.runAway(blueCowboy.xpos,blueCowboy.ypos,5);
 
         bull1.move(worldWidth,worldHeight);
         bull2.move(worldWidth,worldHeight);
@@ -160,7 +158,6 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
         if (score >10) {
             sheep.move();
         }
-        stopBull();
 
         double targetX = redCowboy.xpos - halfScreenW;
         double targetY = redCowboy.ypos - halfScreenH;
@@ -177,20 +174,21 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
 
     public void checkCrashAndToss() {
         int pushBack = 100;
-        int delayTime = 0;
 
         Bull[] bulls = {bull1, bull2, bull3, bull4, bull5, bull6};
 
         for (Bull b : bulls) {
 
+            if (score < 10) {
+                bull5.isAlive = false;
+                bull6.isAlive = false;
+            } else {
+                bull5.isAlive = true;
+                bull6.isAlive = true;
+            }
+
             if (b.rect.intersects(redCowboy.rect)) {
-                delayTime = 20;
-                if (delayTime > 0){
-                    if (bull5.rect.intersects(redCowboy.rect) && score <20) {
-                        pushBack = 0;
-                    } else if (bull6.rect.intersects(redCowboy.rect ) && score < 20) {
-                        pushBack = 0;
-                    } else
+                if (b.isAlive) {
                     if (b.xpos < redCowboy.xpos) redCowboy.xpos += pushBack;
                     else redCowboy.xpos -= pushBack;
                     if (b.ypos < redCowboy.ypos) redCowboy.ypos += pushBack;
@@ -199,35 +197,28 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
                     if (redCowboy.xpos < 0) redCowboy.xpos = 0;
                     if (redCowboy.xpos + redCowboy.width > worldWidth) redCowboy.xpos = worldWidth - redCowboy.width;
                     if (redCowboy.ypos < 0) redCowboy.ypos = 0;
-                    if (redCowboy.ypos + redCowboy.height > worldHeight)
-                        redCowboy.ypos = worldHeight - redCowboy.height;
+                    if (redCowboy.ypos + redCowboy.height > worldHeight) redCowboy.ypos = worldHeight - redCowboy.height;
 
-                    if (healthBarRed > 0) { healthBarRed--;}
-
-                    pushBack = 100;
-                    delayTime--;
+                    if (healthBarRed > 0) healthBarRed--;
+                    pushBack =100;
                 }
-
             }
 
             if (b.rect.intersects(blueCowboy.rect)) {
-                if (bull5.rect.intersects(blueCowboy.rect) && score <20) {
-                    pushBack = 0;
-                } else if (bull6.rect.intersects(blueCowboy.rect ) && score < 20) {
-                    pushBack = 0;
-                } else
-                if (b.xpos < blueCowboy.xpos) blueCowboy.xpos += pushBack;
-                else blueCowboy.xpos -= pushBack;
-                if (b.ypos < blueCowboy.ypos) blueCowboy.ypos += pushBack;
-                else blueCowboy.ypos -= pushBack;
+                if (b.isAlive) {
+                    if (b.xpos < blueCowboy.xpos) blueCowboy.xpos += pushBack;
+                    else blueCowboy.xpos -= pushBack;
+                    if (b.ypos < blueCowboy.ypos) blueCowboy.ypos += pushBack;
+                    else blueCowboy.ypos -= pushBack;
 
-                if (blueCowboy.xpos < 0) blueCowboy.xpos = 0;
-                if (blueCowboy.xpos + blueCowboy.width > worldWidth) blueCowboy.xpos = worldWidth - blueCowboy.width;
-                if (blueCowboy.ypos < 0) blueCowboy.ypos = 0;
-                if (blueCowboy.ypos + blueCowboy.height > worldHeight) blueCowboy.ypos = worldHeight - blueCowboy.height;
+                    if (blueCowboy.xpos < 0) blueCowboy.xpos = 0;
+                    if (blueCowboy.xpos + blueCowboy.width > worldWidth) blueCowboy.xpos = worldWidth - blueCowboy.width;
+                    if (blueCowboy.ypos < 0) blueCowboy.ypos = 0;
+                    if (blueCowboy.ypos + blueCowboy.height > worldHeight) blueCowboy.ypos = worldHeight - blueCowboy.height;
 
-                if (healthBarBlue > 0) healthBarBlue--;
-                pushBack =100;
+                    if (healthBarBlue > 0) healthBarBlue--;
+                    pushBack =100;
+                }
             }
 
         }
@@ -352,7 +343,7 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
         g.drawImage(bullImage, (int) (bull3.xpos - cameraX), (int) (bull3.ypos - cameraY), bull3.width, bull3.height, null);
         g.drawImage(bullImage, (int) (bull4.xpos - cameraX), (int) (bull4.ypos - cameraY), bull4.width, bull4.height, null);
 
-        if (score > 20) {
+        if (score > 10) {
             g.drawImage(bullImage, (int) (bull5.xpos - cameraX), (int) (bull5.ypos - cameraY), bull5.width, bull5.height, null);
             g.drawImage(bullImage, (int) (bull6.xpos - cameraX), (int) (bull6.ypos - cameraY), bull6.width, bull6.height, null);
         }
@@ -369,6 +360,12 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
         }
         if (chicken1.isAlive) {
             g.drawImage(chickenImage, (int) (chicken1.xpos - cameraX), (int) (chicken1.ypos -cameraY), chicken1.width, chicken1.height, null);
+        }
+        if (chicken2.isAlive) {
+            g.drawImage(chickenImage, (int) (chicken2.xpos - cameraX), (int) (chicken2.ypos -cameraY), chicken2.width, chicken2.height, null);
+        }
+        if (chicken3.isAlive) {
+            g.drawImage(chickenImage, (int) (chicken3.xpos - cameraX), (int) (chicken3.ypos -cameraY), chicken3.width, chicken3.height, null);
         }
 
         g.setColor(Color.WHITE);

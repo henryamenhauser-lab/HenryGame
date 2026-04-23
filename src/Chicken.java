@@ -34,10 +34,10 @@ public class Chicken {
         ypos = ypos + dy;
         rect = new Rectangle(xpos, ypos, width, height);
 
-        if(xpos >= 1000 - width ){
+        if(xpos >= BasicGameApp.worldWidth - width ){
             dx = -dx;
         }
-        if (ypos >= 700 - height){;
+        if (ypos >= BasicGameApp.worldHeight - height){;
             dy = -dy;
         }
         if(xpos <= 0 ){
