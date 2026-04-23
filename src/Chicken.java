@@ -59,14 +59,25 @@ public class Chicken {
             dx = (int)(speed * dxSide / dist);
             dy = (int)(speed * dySide / dist);
         }
+
+        int wallDistance = 100;
+
+        if (xpos < wallDistance) {
+            dx += 2;
+        }
+        if (xpos > BasicGameApp.worldWidth - wallDistance) {
+            dx -=2;
+        }
+        if (ypos < wallDistance) {
+            dy += 2;
+        }
+        if (ypos > BasicGameApp.worldHeight-wallDistance) {
+            dy -=2;
+        }
+
         xpos += dx;
         ypos += dy;
         rect.setBounds(xpos, ypos, width, height);
-
-        if (xpos <= 0) { xpos = 0; dx = -dx; }
-        if (xpos >= BasicGameApp.worldWidth - width) { xpos = BasicGameApp.worldWidth - width; dx = -dx; }
-        if (ypos <= 0) { ypos = 0; dy = -dy; }
-        if (ypos >= BasicGameApp.worldHeight - height) { ypos = BasicGameApp.worldHeight - height; dy = -dy; }
     }
 
 }
