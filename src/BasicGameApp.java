@@ -50,12 +50,8 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
     public double cameraX;
     public double cameraY;
 
-    Bull bull1;
-    Bull bull2;
-    Bull bull3;
-    Bull bull4;
-    Bull bull5;
-    Bull bull6;
+    Bull[] bulls;
+
     Image bullImage;
 
     RedCowboy redCowboy;
@@ -67,9 +63,7 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
     Sheep sheep;
     Image sheepImage;
 
-    Chicken chicken1;
-    Chicken chicken2;
-    Chicken chicken3;
+    Chicken[] chickens;
     Image chickenImage;
 
     Image rodeo = Toolkit.getDefaultToolkit().getImage("RodeoArena.png");
@@ -92,14 +86,14 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
 
         setUpGraphics();
 
-        bull1 = new Bull("bull", 10, 10);
+        bulls[0] = new Bull("bull", 10, 10);
         bullImage = Toolkit.getDefaultToolkit().getImage("Bull.png");
 
-        bull2 = new Bull("bull", 100, 10);
-        bull3 = new Bull("bull", 500, 100);
-        bull4 = new Bull("bull", 250, 250);
-        bull5 = new Bull("bull",880,580);
-        bull6 = new Bull("bull",880,580);
+        bulls[1] = new Bull("bull", 100, 10);
+        bulls[2] = new Bull("bull", 500, 100);
+        bulls[3] = new Bull("bull", 250, 250);
+        bulls[4] = new Bull("bull",880,580);
+        bulls[5] = new Bull("bull",880,580);
 
         redCowboy = new RedCowboy("RedCowboy", 263, 561);
         redcowboyImage = Toolkit.getDefaultToolkit().getImage("CowboyImage1.png");
@@ -110,9 +104,9 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
         sheep = new Sheep("SheepItem",40,40);
         sheepImage = Toolkit.getDefaultToolkit().getImage("Sheep.png");
 
-        chicken1 = new Chicken("Chicken1",900,650);
-        chicken2 = new Chicken("Chicken2",880,630);
-        chicken3 = new Chicken("Chicken3",860,610);
+        chickens[0] = new Chicken("Chicken1",900,650);
+        chickens[1] = new Chicken("Chicken2",880,630);
+        chickens[2] = new Chicken("Chicken3",860,610);
 
         chickenImage = Toolkit.getDefaultToolkit().getImage("Chicken.png");
 
@@ -133,22 +127,20 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
         double halfScreenW = WIDTH / 2.0;
         double halfScreenH = HEIGHT / 2.0;
 
-        bull1.chase((int) redCowboy.xpos, (int) redCowboy.ypos,3);
-        bull2.chase(blueCowboy.xpos, blueCowboy.ypos, 3);
-        bull6.chase(sheep.xpos, sheep.ypos,2.5);
+        bulls[0].chase((int) redCowboy.xpos, (int) redCowboy.ypos,3);
+        bulls[1].chase(blueCowboy.xpos, blueCowboy.ypos, 3);
+        bulls[5].chase(sheep.xpos, sheep.ypos,2.5);
 
-        bull1.move(worldWidth,worldHeight);
-        bull2.move(worldWidth,worldHeight);
-        bull3.move(worldWidth,worldHeight);
-        bull4.move(worldWidth,worldHeight);
-        bull5.move(worldWidth,worldHeight);
-        bull6.move(worldWidth,worldHeight);
+        for (Bull b : bulls) {
+            b.move(worldWidth,worldHeight);
+        }
 
         blueCowboy.move();
         redCowboy.move();
-        chicken1.move();
-        chicken2.move();
-        chicken3.move();
+
+        for (Chicken c : chickens) {
+            c.move();
+        }
 
         checkCrashAndToss();
         collectSheep();
@@ -175,16 +167,15 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
     public void checkCrashAndToss() {
         int pushBack = 100;
 
-        Bull[] bulls = {bull1, bull2, bull3, bull4, bull5, bull6};
 
         for (Bull b : bulls) {
 
             if (score < 10) {
-                bull5.isAlive = false;
-                bull6.isAlive = false;
+                bulls[4].isAlive = false;
+                bulls[5].isAlive = false;
             } else {
-                bull5.isAlive = true;
-                bull6.isAlive = true;
+                bulls[4].isAlive = true;
+                bulls[5].isAlive = true;
             }
 
             if (b.rect.intersects(redCowboy.rect)) {
@@ -241,53 +232,36 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
     }
         public void collectChicken() {
 
-            Chicken[] chickens = {chicken1, chicken2, chicken3};
-
             for (Chicken c : chickens) {
+                if (!c.isAlive) continue;
 
-                if (c.isAlive) {
-                    if (redCowboy.rect.intersects(c.rect) && healthBarRed > 0 || blueCowboy.rect.intersects(c.rect) && healthBarBlue > 0) {
-                        if (c.name == "Chicken1") {
-                            chicken1.isAlive = false;
-                            score += 2;
-                            chicken1.xpos = (int) (Math.random() * (worldWidth - sheep.width));
-                            chicken1.ypos = (int) (Math.random() * (worldHeight - sheep.height));
-                            chicken1.isAlive = true;
-                            chicken1.rect.setBounds(chicken1.xpos, chicken1.ypos, chicken1.width, chicken1.height);
-                        } else if (c.name == "Chicken2") {
-                            chicken2.isAlive = false;
-                            score += 2;
-                            chicken2.xpos = (int) (Math.random() * (worldWidth - sheep.width));
-                            chicken2.ypos = (int) (Math.random() * (worldHeight - sheep.height));
-                            chicken2.isAlive = true;
-                            chicken2.rect.setBounds(chicken2.xpos, chicken2.ypos, chicken2.width, chicken2.height);
-                        } else if (c.name == "Chicken3") {
-                            chicken3.isAlive = false;
-                            score += 2;
-                            chicken3.xpos = (int) (Math.random() * (worldWidth - sheep.width));
-                            chicken3.ypos = (int) (Math.random() * (worldHeight - sheep.height));
-                            chicken3.isAlive = true;
-                            chicken3.rect.setBounds(chicken3.xpos, chicken3.ypos, chicken3.width, chicken3.height);
-                        }
-                    }
+                boolean redHit = redCowboy.rect.intersects(c.rect) && healthBarRed > 0;
+                boolean blueHit = blueCowboy.rect.intersects(c.rect) && healthBarBlue > 0;
+
+                if (redHit || blueHit) {
+                    score += 2;
+
+                    c.xpos = (int)(Math.random() * (worldWidth - c.width));
+                    c.ypos = (int)(Math.random() * (worldHeight - c.height));
+                    c.rect.setBounds(c.xpos, c.ypos, c.width, c.height);
                 }
             }
         }
 
     public void stopBull() {
         if (healthBarBlue <1) {
-            bull2.dx = 0;
-            bull2.dy = 0;
+            bulls[1].dx = 0;
+            bulls[1].dy = 0;
         }
         if (healthBarRed <1) {
-            bull1.dx = 0;
-            bull1.dy = 0;
+            bulls[0].dx = 0;
+            bulls[0].dy = 0;
         }
         if (healthBarBlue <1 && healthBarRed <1) {
-            bull3.dx = 0;
-            bull3.dy = 0;
-            bull4.dx = 0;
-            bull4.dy = 0;
+            bulls[2].dx = 0;
+            bulls[2].dy = 0;
+            bulls[3].dx = 0;
+            bulls[3].dy = 0;
         }
     }
 
@@ -338,14 +312,16 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
 
         g.drawImage(rodeo, - (int) cameraX, - (int) cameraY, worldWidth, worldHeight, null);
 
-        g.drawImage(bullImage, (int) (bull1.xpos - cameraX), (int) (bull1.ypos - cameraY), bull1.width, bull1.height, null);
-        g.drawImage(bullImage, (int) (bull2.xpos - cameraX), (int) (bull2.ypos - cameraY), bull2.width, bull2.height, null);
-        g.drawImage(bullImage, (int) (bull3.xpos - cameraX), (int) (bull3.ypos - cameraY), bull3.width, bull3.height, null);
-        g.drawImage(bullImage, (int) (bull4.xpos - cameraX), (int) (bull4.ypos - cameraY), bull4.width, bull4.height, null);
+        for (int i = 0; i < bulls.length; i++) {
 
-        if (score > 10) {
-            g.drawImage(bullImage, (int) (bull5.xpos - cameraX), (int) (bull5.ypos - cameraY), bull5.width, bull5.height, null);
-            g.drawImage(bullImage, (int) (bull6.xpos - cameraX), (int) (bull6.ypos - cameraY), bull6.width, bull6.height, null);
+            if (i < 4 || score > 10) {
+                g.drawImage(bullImage,
+                        (int)(bulls[i].xpos - cameraX),
+                        (int)(bulls[i].ypos - cameraY),
+                        bulls[i].width,
+                        bulls[i].height,
+                        null);
+            }
         }
 
         int drawX = (int)(redCowboy.xpos - cameraX);
@@ -358,14 +334,10 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
         if (sheep.isAlive) {
             g.drawImage(sheepImage, (int) (sheep.xpos -cameraX), (int) (sheep.ypos -cameraY), sheep.width, sheep.height, null);
         }
-        if (chicken1.isAlive) {
-            g.drawImage(chickenImage, (int) (chicken1.xpos - cameraX), (int) (chicken1.ypos -cameraY), chicken1.width, chicken1.height, null);
-        }
-        if (chicken2.isAlive) {
-            g.drawImage(chickenImage, (int) (chicken2.xpos - cameraX), (int) (chicken2.ypos -cameraY), chicken2.width, chicken2.height, null);
-        }
-        if (chicken3.isAlive) {
-            g.drawImage(chickenImage, (int) (chicken3.xpos - cameraX), (int) (chicken3.ypos -cameraY), chicken3.width, chicken3.height, null);
+        for (Chicken c : chickens) {
+            if (c.isAlive) {
+                g.drawImage(chickenImage,(int)(c.xpos-cameraX),(int)(c.ypos - cameraY),c.width,c.height,null );
+            }
         }
 
         g.setColor(Color.WHITE);
@@ -479,17 +451,23 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
                 }
             }
             if (e.getKeyCode() == 82) { //this is (R)
-                bull1 = new Bull("bull", 10, 10);
-                bull2 = new Bull("bull", 100, 10);
-                bull3 = new Bull("bull", 500, 100);
-                bull4 = new Bull("bull", 250, 250);
-                bull5 = new Bull("bull", 880, 580);
-                bull6 = new Bull("bull", 880, 580);
+                bulls[0] = new Bull("bull", 10, 10);
+                bulls[1] = new Bull("bull", 100, 10);
+                bulls[2] = new Bull("bull", 500, 100);
+                bulls[3] = new Bull("bull", 250, 250);
+                bulls[4] = new Bull("bull", 880, 580);
+                bulls[5] = new Bull("bull", 880, 580);
 
                 redCowboy = new RedCowboy("RedCowboy", 263, 561);
                 blueCowboy = new BlueCowboy("BlueCowboy", 132, 236);
                 sheep = new Sheep("SheepItem", 40, 40);
-                chicken1 = new Chicken("Chicken", 900, 650);
+                chickens[0] = new Chicken("Chicken", 910, 650);
+                chickens[1] = new Chicken("Chicken", 920, 650);
+                chickens[2] = new Chicken("Chicken", 930, 650);
+
+
+
+
 
                 healthBarBlue = 5;
                 healthBarRed = 5;
