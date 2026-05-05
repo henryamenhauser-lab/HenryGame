@@ -243,37 +243,26 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
     }
     public void collectChicken() {
 
-        Chicken[] chickens = {chicken1, chicken2, chicken3};
+            Chicken[] chickens = {chicken1, chicken2, chicken3};
 
-        for (Chicken c : chickens) {
+            for (Chicken c : chickens) {
 
-            if (c.isAlive) {
-                if (redCowboy.rect.intersects(c.rect) && healthBarRed > 0 || blueCowboy.rect.intersects(c.rect) && healthBarBlue > 0) {
-                    if (c.name.equals("Chicken1")) {
-                        chicken1.isAlive = false;
+                if (c.isAlive) {
+                    if ((redCowboy.rect.intersects(c.rect) && healthBarRed > 0) ||
+                            (blueCowboy.rect.intersects(c.rect) && healthBarBlue > 0)) {
+
+                        c.isAlive = false;
                         score += 2;
-                        chicken1.xpos = (int) (Math.random() * (worldWidth - sheep.width));
-                        chicken1.ypos = (int) (Math.random() * (worldHeight - sheep.height));
-                        chicken1.isAlive = true;
-                        chicken1.rect.setBounds(chicken1.xpos, chicken1.ypos, chicken1.width, chicken1.height);
-                    } else if (c.name.equals("Chicken2")) {
-                        chicken2.isAlive = false;
-                        score += 2;
-                        chicken2.xpos = (int) (Math.random() * (worldWidth - sheep.width));
-                        chicken2.ypos = (int) (Math.random() * (worldHeight - sheep.height));
-                        chicken2.isAlive = true;
-                        chicken2.rect.setBounds(chicken2.xpos, chicken2.ypos, chicken2.width, chicken2.height);
-                    } else if (c.name.equals("Chicken3")) {
-                        chicken3.isAlive = false;
-                        score += 2;
-                        chicken3.xpos = (int) (Math.random() * (worldWidth - sheep.width));
-                        chicken3.ypos = (int) (Math.random() * (worldHeight - sheep.height));
-                        chicken3.isAlive = true;
-                        chicken3.rect.setBounds(chicken3.xpos, chicken3.ypos, chicken3.width, chicken3.height);
+
+                        c.xpos = (int) (Math.random() * (worldWidth - c.width));
+                        c.ypos = (int) (Math.random() * (worldHeight - c.height));
+
+                        c.isAlive = true;
+                        c.rect.setBounds(c.xpos, c.ypos, c.width, c.height);
                     }
                 }
             }
-        }
+
     }
 
     public void stopBull() {
@@ -473,6 +462,7 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
         bufferStrategy = canvas.getBufferStrategy();
         canvas.requestFocus();
         canvas.addKeyListener(this);
+        canvas.addMouseListener(this);
         System.out.println("DONE graphic setup");
     }
 
@@ -591,6 +581,11 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
+        int mouseX = e.getX() + (int)cameraX;
+        int mouseY = e.getY() + (int)cameraY;
+
+        redCowboy.xpos = mouseX;
+        redCowboy.ypos = mouseY;
 
     }
 
@@ -609,7 +604,4 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener {
 
     }
 
-    // List of stuff I want to add.
-    // Bandages to gain health back
-    // Add more bulls
 }
